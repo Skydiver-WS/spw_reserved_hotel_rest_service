@@ -1,0 +1,35 @@
+server:
+  port: 8082
+spring:
+  kafka:
+    bootstrap-servers: 127.0.0.1:9093 # ??????? ????? ?????? ??????? Kafka
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+    consumer:
+      group-id: data-base # ?????? ????????????
+      auto-offset-reset: earliest # ???????? ? ?????? ??????? ????????, ???? ???????? ?? ???????
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      topic:
+        kafkaMessageGroupId: "data-base"
+        topicList:
+          - create-update-hotel
+          - find-all-hotel
+          - find-by-parameter-hotel
+          - remove-hotel
+          - create-update-room
+          - find-all-room
+          - find-by-parameter-room
+          - remove-room
+        typeKey:
+          - create-hotel
+          - update-hotel
+          - delete-hotel
+          - read-hotel
+          - create-room
+          - update-room
+          - delete-room
+          - read-room
