@@ -2,33 +2,28 @@ package ru.project.reserved.system.hotel.rest.service.listener;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
-import ru.project.reserved.system.hotel.rest.service.properties.KafkaProperties;
-import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
-
-
-import java.util.Arrays;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class Listener {
+public class ListenerKafka {
 
-    private final KafkaService kafkaService;
-    private final KafkaProperties kafkaProperties;
+
+
+    private final ApplicationEventPublisher publisher;
 
 
     @KafkaListener(groupId = "${spring.kafka.producer.topic.kafkaMessageGroupId}",
-            topics = "#{@kafkaTopics}",
+            topics = "#{@kafkaConsumerTopics}",
             containerFactory = "kafkaListenerContainerFactory")
     public void kafkaListener(String message,
                               @Header(value = KafkaHeaders.RECEIVED_KEY, required = false) String key) {
-        if (Arrays.asList(kafkaProperties.getTypeKey()).contains(key)) {
             log.info("Get key {}, message: {}", key, message);
-            kafkaService.getMessageGroupDataBase(key, message);
-        }
+            publisher.publishEvent(message);
     }
 }

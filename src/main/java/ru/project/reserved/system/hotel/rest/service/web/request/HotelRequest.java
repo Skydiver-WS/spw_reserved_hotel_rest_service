@@ -1,7 +1,7 @@
 package ru.project.reserved.system.hotel.rest.service.web.request;
 
 import lombok.*;
-import ru.project.reserved.system.db.app.service.entity.City;
+import ru.project.reserved.system.hotel.rest.service.dto.City;
 
 import java.util.List;
 

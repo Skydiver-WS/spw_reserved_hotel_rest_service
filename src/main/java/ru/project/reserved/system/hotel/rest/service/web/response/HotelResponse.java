@@ -4,7 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import ru.project.reserved.system.db.app.service.entity.City;
+import ru.project.reserved.system.hotel.rest.service.dto.City;
+
 
 import java.util.List;
 

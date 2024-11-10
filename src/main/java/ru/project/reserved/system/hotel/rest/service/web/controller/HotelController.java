@@ -17,27 +17,27 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping
-    public ResponseEntity<List<HotelResponse>> findAllHotels(){
+    public ResponseEntity<String> findAllHotels(){
         return hotelService.findAllHotels();
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<HotelResponse>> findHotels(@RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<String> findHotels(@RequestBody HotelRequest hotelRequest){
         return hotelService.searchHotelByParameters(hotelRequest);
     }
 
     @PostMapping
-    public ResponseEntity<HotelResponse> createHotel(@RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<String> createHotel(@RequestBody HotelRequest hotelRequest){
         return hotelService.createHotel(hotelRequest);
     }
 
     @PutMapping
-    public ResponseEntity<HotelResponse> updateHotel(@RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<String> updateHotel(@RequestBody HotelRequest hotelRequest){
         return hotelService.updateHotel(hotelRequest);
     }
 
     @DeleteMapping
-    public ResponseEntity<HotelResponse> deleteHotel(@RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<String> deleteHotel(@RequestBody HotelRequest hotelRequest){
         return hotelService.deleteService(hotelRequest);
     }
 
