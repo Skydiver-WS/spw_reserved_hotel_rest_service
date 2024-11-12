@@ -1,13 +1,12 @@
 package ru.project.reserved.system.hotel.rest.service.dto;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 @Builder
-public class KafkaDto {
-    private TopicType topic;
+public class KafkaResponseDto {
+
     private String key;
+    private String message;
 }

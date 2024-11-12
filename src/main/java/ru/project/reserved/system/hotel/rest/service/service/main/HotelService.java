@@ -7,13 +7,13 @@ import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 import java.util.List;
 
 public interface HotelService {
-    ResponseEntity<String> findAllHotels();
+    ResponseEntity<HotelResponse> findAllHotels();
 
-    ResponseEntity<String> searchHotelByParameters(HotelRequest hotelRequest);
+    ResponseEntity<HotelResponse> searchHotelByParameters(HotelRequest hotelRequest);
 
-    ResponseEntity<String> createHotel(HotelRequest hotelRequest);
+    ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest);
 
-    ResponseEntity<String> updateHotel(HotelRequest hotelRequest);
+    ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest);
 
-    ResponseEntity<String> deleteService(HotelRequest hotelRequest);
+    ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest);
 }

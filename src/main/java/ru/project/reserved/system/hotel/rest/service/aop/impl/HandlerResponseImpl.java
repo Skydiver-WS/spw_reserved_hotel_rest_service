@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.aop.HandlerResponse;
-import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
+import ru.project.reserved.system.hotel.rest.service.dto.ErrorType;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
 
@@ -27,7 +27,6 @@ import java.util.Objects;
 @Slf4j
 public class HandlerResponseImpl {
 
-    private final KafkaService kafkaService;
     private final ObjectMapper objectMapper;
 
     @Around("@annotation(handlerResponse)")
@@ -45,39 +44,24 @@ public class HandlerResponseImpl {
             log.info("Object body is not null");
             return object;
         }
-        String response = "";
-        int count = 1;
-        while (count <= 5) {
-            Thread.sleep(5000);
-            log.info("Waiting response from db service. Attempt {}", count);
-            response = kafkaService.getResponseFromKafka();
-            if (Strings.isNotBlank(response)) {
-                log.info("Response from service db: {}", response);
-                return ResponseEntity.ok().body(response);
-            }
-            count++;
-        }
-
         log.warn("No response from kafka {}", HttpStatus.GATEWAY_TIMEOUT);
         return ResponseEntity
                 .status(HttpStatus.GATEWAY_TIMEOUT)  // 504 Gateway Timeout
-                .body(HotelResponse.builder()
-                        .errorMessage(getResponseType(handlerResponse))
-                        .build());
+                .body(getResponseType(handlerResponse));
     }
 
     @SneakyThrows
-    private String getResponseType(HandlerResponse handlerResponse) {
+    private Object getResponseType(HandlerResponse handlerResponse) {
         Class<?> object = handlerResponse.typeObjectResponse();
-        String response = "Unknown response";
+        Object response = null;
         if (object.equals(HotelResponse.class)) {
-            response = objectMapper.writeValueAsString(HotelResponse.builder()
-                    .errorMessage("Not response from server db")
-                    .build());
+            response = HotelResponse.builder()
+                    .errorMessage(ErrorType.NOT_RESPONSE_FROM_DB.getErrorMessage())
+                    .build();
         } else if (object.equals(RoomResponse.class)) {
-            response = objectMapper.writeValueAsString(HotelResponse.builder()
-                    .errorMessage("Not response from server db")
-                    .build());
+            response = HotelResponse.builder()
+                    .errorMessage(ErrorType.NOT_RESPONSE_FROM_DB.getErrorMessage())
+                    .build();
         }
         return response;
     }
