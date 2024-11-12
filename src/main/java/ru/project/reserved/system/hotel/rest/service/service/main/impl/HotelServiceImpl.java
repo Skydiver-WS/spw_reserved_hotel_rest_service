@@ -32,20 +32,20 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<String> findAllHotels() {
+    public ResponseEntity<HotelResponse> findAllHotels() {
         return null;
     }
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<String> searchHotelByParameters(HotelRequest hotelRequest) {
+    public ResponseEntity<HotelResponse> searchHotelByParameters(HotelRequest hotelRequest) {
         return null;
     }
 
     @Override
     @SneakyThrows
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<String> createHotel(HotelRequest hotelRequest) {
+    public ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest) {
         String key = UUID.randomUUID().toString();
         String hotelJson = objectMapper.writeValueAsString(hotelRequest);
         kafkaService.sendMessage(KafkaDto.builder()
@@ -53,18 +53,22 @@ public class HotelServiceImpl implements HotelService {
                         .key(key)
                         .build(),
                 hotelJson);
-        return ResponseEntity.status(HttpStatus.CREATED).body(kafkaService.getResponseFromKafka());
+        String response = kafkaService.getResponseFromKafka(key);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Strings.isNotBlank(response) ?
+                        objectMapper.readValue(response, HotelResponse.class) :
+                        null);
     }
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<String> updateHotel(HotelRequest hotelRequest) {
+    public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
         return null;
     }
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<String> deleteService(HotelRequest hotelRequest) {
+    public ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest) {
         return null;
     }
 }
