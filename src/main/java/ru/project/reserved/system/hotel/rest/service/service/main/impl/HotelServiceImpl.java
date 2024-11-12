@@ -20,6 +20,7 @@ import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -45,10 +46,11 @@ public class HotelServiceImpl implements HotelService {
     @SneakyThrows
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<String> createHotel(HotelRequest hotelRequest) {
+        String key = UUID.randomUUID().toString();
         String hotelJson = objectMapper.writeValueAsString(hotelRequest);
         kafkaService.sendMessage(KafkaDto.builder()
-                        .topic(TopicType.CREATE_UPDATE_HOTEL)
-                        .keyType(KeyType.CREATE_HOTEL)
+                        .topic(TopicType.CREATE_HOTEL)
+                        .key(key)
                         .build(),
                 hotelJson);
         return ResponseEntity.status(HttpStatus.CREATED).body(kafkaService.getResponseFromKafka());

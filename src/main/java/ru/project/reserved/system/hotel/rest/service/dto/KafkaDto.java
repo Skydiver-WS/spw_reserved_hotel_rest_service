@@ -9,5 +9,5 @@ import lombok.Setter;
 @Builder
 public class KafkaDto {
     private TopicType topic;
-    private KeyType keyType;
+    private String key;
 }

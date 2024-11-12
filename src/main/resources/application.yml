@@ -9,11 +9,13 @@ spring:
       topic:
         kafkaMessageGroupId: "data-base"
         topicList:
-          - create-update-hotel
+          - create-hotel
+          - update-hotel
           - find-all-hotel
           - find-by-parameter-hotel
           - remove-hotel
-          - create-update-room
+          - create-room
+          - update-room
           - find-all-room
           - find-by-parameter-room
           - remove-room
