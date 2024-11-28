@@ -1,18 +1,16 @@
 package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.shaded.io.opentelemetry.proto.trace.v1.Status;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.project.reserved.system.hotel.rest.service.aop.HandlerResponse;
 import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
-import ru.project.reserved.system.hotel.rest.service.dto.KeyType;
 import ru.project.reserved.system.hotel.rest.service.dto.TopicType;
 import ru.project.reserved.system.hotel.rest.service.service.main.HotelService;
 import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
@@ -20,6 +18,7 @@ import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -32,43 +31,72 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<HotelResponse> findAllHotels() {
-        return null;
+    public ResponseEntity<List<HotelResponse>> findAllHotels() {
+        String key = createEventAndReturnKey(TopicType.FIND_ALL_HOTEL, null);
+        String response = kafkaService.getResponseFromKafka(key);
+        return createResponseEntityList(HttpStatus.OK, response);
     }
 
     @Override
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<HotelResponse> searchHotelByParameters(HotelRequest hotelRequest) {
-        return null;
+    @SneakyThrows
+    public ResponseEntity<List<HotelResponse>> searchHotelByParameters(HotelRequest hotelRequest) {
+        String key = createEventAndReturnKey(TopicType.FIND_BY_PARAMETER_HOTEL, hotelRequest);
+        String response = kafkaService.getResponseFromKafka(key);
+        return createResponseEntityList(HttpStatus.OK, response);
     }
 
     @Override
     @SneakyThrows
     @HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest) {
-        String key = UUID.randomUUID().toString();
-        String hotelJson = objectMapper.writeValueAsString(hotelRequest);
-        kafkaService.sendMessage(KafkaDto.builder()
-                        .topic(TopicType.CREATE_HOTEL)
-                        .key(key)
-                        .build(),
-                hotelJson);
+        String key = createEventAndReturnKey(TopicType.CREATE_HOTEL, hotelRequest);
         String response = kafkaService.getResponseFromKafka(key);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Strings.isNotBlank(response) ?
-                        objectMapper.readValue(response, HotelResponse.class) :
+        return createResponseEntity(HttpStatus.CREATED, response);
+    }
+
+    @Override
+    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    @SneakyThrows
+    public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
+        String key = createEventAndReturnKey(TopicType.UPDATE_HOTEL, hotelRequest);
+        return createResponseEntity(HttpStatus.OK, kafkaService.getResponseFromKafka(key));
+    }
+
+    @Override
+    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    @SneakyThrows
+    public ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest) {
+        String key = createEventAndReturnKey(TopicType.REMOVE_HOTEL, hotelRequest);
+        return createResponseEntity(HttpStatus.OK, kafkaService.getResponseFromKafka(key));
+    }
+
+    @SneakyThrows
+    private ResponseEntity<HotelResponse>  createResponseEntity(HttpStatus status, String body){
+        return ResponseEntity.status(status)
+                .body(Strings.isNotBlank(body) ?
+                        objectMapper.readValue(body, HotelResponse.class) :
                         null);
     }
 
-    @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
-        return null;
+    @SneakyThrows
+    private ResponseEntity<List<HotelResponse>> createResponseEntityList(HttpStatus status, String body) {
+        return ResponseEntity.status(status)
+                .body(Strings.isNotBlank(body) ?
+                        objectMapper.readValue(body, new TypeReference<>() {
+                        }) :
+                        null);
     }
 
-    @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
-    public ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest) {
-        return null;
+    @SneakyThrows
+    private String createEventAndReturnKey(TopicType topicType, HotelRequest hotelRequest){
+        String key = UUID.randomUUID().toString();
+        String hotelJson = Objects.nonNull(hotelRequest) ? objectMapper.writeValueAsString(hotelRequest) : "";
+        kafkaService.sendMessage(KafkaDto.builder()
+                .key(key)
+                .topic(topicType)
+                .build(), hotelJson);
+        return key;
     }
+
 }

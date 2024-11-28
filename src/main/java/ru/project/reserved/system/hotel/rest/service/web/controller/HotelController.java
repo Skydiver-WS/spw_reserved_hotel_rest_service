@@ -17,12 +17,12 @@ public class HotelController {
     private final HotelService hotelService;
 
     @GetMapping
-    public ResponseEntity<HotelResponse> findAllHotels(){
+    public ResponseEntity<List<HotelResponse>> findAllHotels(){
         return hotelService.findAllHotels();
     }
 
     @PostMapping("/search")
-    public ResponseEntity<HotelResponse> findHotels(@RequestBody HotelRequest hotelRequest){
+    public ResponseEntity<List<HotelResponse>> findHotels(@RequestBody HotelRequest hotelRequest){
         return hotelService.searchHotelByParameters(hotelRequest);
     }
 

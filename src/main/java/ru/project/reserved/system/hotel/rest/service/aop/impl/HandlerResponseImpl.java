@@ -4,11 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
@@ -26,8 +22,6 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class HandlerResponseImpl {
-
-    private final ObjectMapper objectMapper;
 
     @Around("@annotation(handlerResponse)")
     @SneakyThrows
