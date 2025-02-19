@@ -37,8 +37,8 @@ public class HotelController {
     }
 
     @DeleteMapping
-    public ResponseEntity<HotelResponse> deleteHotel(@RequestBody HotelRequest hotelRequest){
-        return hotelService.deleteService(hotelRequest);
+    public ResponseEntity<HotelResponse> deleteHotel(@RequestParam Long id){
+        return hotelService.deleteService(id);
     }
 
 

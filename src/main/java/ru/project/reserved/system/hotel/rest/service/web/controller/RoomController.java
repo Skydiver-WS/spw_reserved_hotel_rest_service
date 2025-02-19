@@ -1,5 +1,6 @@
-package ru.project.reserved.system.room.rest.service.web.controller;
+package ru.project.reserved.system.hotel.rest.service.web.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,9 +11,9 @@ import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/room")
+@RequiredArgsConstructor
 public class RoomController {
     private final RoomService roomService;
 
@@ -21,23 +22,28 @@ public class RoomController {
         return roomService.findAllRooms();
     }
 
+    @PutMapping("/booking")
+    public ResponseEntity<RoomResponse> bookingRoom(@RequestBody @Valid RoomRequest roomRequest) {
+        return roomService.bookingRoom(roomRequest);
+    }
+
     @PostMapping("/search")
-    public ResponseEntity<List<RoomResponse>> findRooms(@RequestBody RoomRequest roomRequest) {
+    public ResponseEntity<List<RoomResponse>> findRooms(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.searchRoomByParameters(roomRequest);
     }
 
     @PostMapping
-    public ResponseEntity<RoomResponse> createRoom(@RequestBody RoomRequest roomRequest) {
+    public ResponseEntity<RoomResponse> createRoom(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.createRoom(roomRequest);
     }
 
     @PutMapping
-    public ResponseEntity<RoomResponse> updateRoom(@RequestBody RoomRequest roomRequest) {
+    public ResponseEntity<RoomResponse> updateRoom(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.updateRoom(roomRequest);
     }
 
     @DeleteMapping
-    public ResponseEntity<RoomResponse> deleteRoom(@RequestBody RoomRequest roomRequest) {
-        return roomService.deleteService(roomRequest);
+    public ResponseEntity<RoomResponse> deleteRoom(@RequestParam Long hotelId, @RequestParam Long roomId) {
+        return roomService.deleteService(hotelId, roomId);
     }
 }

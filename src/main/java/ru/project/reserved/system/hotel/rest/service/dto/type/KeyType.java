@@ -1,4 +1,4 @@
-package ru.project.reserved.system.hotel.rest.service.dto;
+package ru.project.reserved.system.hotel.rest.service.dto.type;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

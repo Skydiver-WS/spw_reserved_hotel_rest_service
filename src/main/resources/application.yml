@@ -8,26 +8,6 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       topic:
         kafkaMessageGroupId: "data-base"
-        topicList:
-          - create-hotel
-          - update-hotel
-          - find-all-hotel
-          - find-by-parameter-hotel
-          - remove-hotel
-          - create-room
-          - update-room
-          - find-all-room
-          - find-by-parameter-room
-          - remove-room
-        typeKey:
-          - create-hotel
-          - update-hotel
-          - delete-hotel
-          - read-hotel
-          - create-room
-          - update-room
-          - delete-room
-          - read-room
 
 
 
@@ -40,6 +20,17 @@ spring:
         topicList:
           - hotel-response
           - room-response
+          - create-hotel
+          - update-hotel
+          - find-all-hotel
+          - find-by-parameter-hotel
+          - remove-hotel
+          - create-room
+          - update-room
+          - find-all-room
+          - find-by-parameter-room
+          - remove-room
+          - reserved-room
 
   data:
    redis:

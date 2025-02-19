@@ -1,6 +1,5 @@
 package ru.project.reserved.system.hotel.rest.service.configuration;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -10,7 +9,6 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
-import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.*;
 import ru.project.reserved.system.hotel.rest.service.properties.KafkaConsumerProperties;
 import ru.project.reserved.system.hotel.rest.service.properties.KafkaProducerProperties;
@@ -25,7 +23,6 @@ import java.util.Map;
 public class KafkaConfiguration {
     private final KafkaProducerProperties kafkaProducerProperties;
     private final KafkaConsumerProperties kafkaConsumerProperties;
-    private final KafkaAdmin kafkaAdmin;
 
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
@@ -63,21 +60,11 @@ public class KafkaConfiguration {
         return factory;
     }
 
-    @PostConstruct
-    public void createTopics() {
-        log.info("Creating topics");
-        Arrays.asList(kafkaProducerProperties.getTopicList())
-                .forEach(topic -> kafkaAdmin.createOrModifyTopics(
-                        TopicBuilder.name(topic)
-                                .partitions(3)
-                                .replicas(1)
-                                .build()
-                ));
-    }
-
     @Bean
     public String[] kafkaConsumerTopics(){
-        log.info("Creating kafka topics");
-        return kafkaConsumerProperties.getTopicList();
+        log.info("Subscribe kafka topics");
+        return Arrays.stream(kafkaConsumerProperties.getTopicList())
+                .filter(t -> t.contains("response"))
+                .toArray(String[]::new);
     }
 }

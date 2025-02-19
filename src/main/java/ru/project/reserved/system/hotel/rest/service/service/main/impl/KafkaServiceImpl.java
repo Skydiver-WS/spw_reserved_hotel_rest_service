@@ -1,4 +1,4 @@
-package ru.project.reserved.system.hotel.rest.service.service.main;
+package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
 import ru.project.reserved.system.hotel.rest.service.listener.ListenerKafka;
+import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
 
 import java.util.UUID;
 

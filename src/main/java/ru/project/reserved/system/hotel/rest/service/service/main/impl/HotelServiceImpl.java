@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.project.reserved.system.hotel.rest.service.aop.HandlerResponse;
 import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
-import ru.project.reserved.system.hotel.rest.service.dto.TopicType;
+import ru.project.reserved.system.hotel.rest.service.dto.type.TopicType;
 import ru.project.reserved.system.hotel.rest.service.service.main.HotelService;
 import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
 import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
@@ -30,7 +30,7 @@ public class HotelServiceImpl implements HotelService {
     private final KafkaService kafkaService;
 
     @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<List<HotelResponse>> findAllHotels() {
         String key = createEventAndReturnKey(TopicType.FIND_ALL_HOTEL, null);
         String response = kafkaService.getResponseFromKafka(key);
@@ -38,7 +38,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
     public ResponseEntity<List<HotelResponse>> searchHotelByParameters(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.FIND_BY_PARAMETER_HOTEL, hotelRequest);
@@ -48,7 +48,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @SneakyThrows
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.CREATE_HOTEL, hotelRequest);
         String response = kafkaService.getResponseFromKafka(key);
@@ -56,7 +56,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
     public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.UPDATE_HOTEL, hotelRequest);
@@ -64,15 +64,16 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    @HandlerResponse(typeObjectResponse = HotelResponse.class)
+    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
-    public ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest) {
-        String key = createEventAndReturnKey(TopicType.REMOVE_HOTEL, hotelRequest);
+    public ResponseEntity<HotelResponse> deleteService(Long hotelId) {
+        String key = createEventAndReturnKey(TopicType.REMOVE_HOTEL, HotelRequest.builder()
+                .id(hotelId).build());
         return createResponseEntity(HttpStatus.OK, kafkaService.getResponseFromKafka(key));
     }
 
     @SneakyThrows
-    private ResponseEntity<HotelResponse>  createResponseEntity(HttpStatus status, String body){
+    private ResponseEntity<HotelResponse> createResponseEntity(HttpStatus status, String body) {
         return ResponseEntity.status(status)
                 .body(Strings.isNotBlank(body) ?
                         objectMapper.readValue(body, HotelResponse.class) :
@@ -89,7 +90,7 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @SneakyThrows
-    private String createEventAndReturnKey(TopicType topicType, HotelRequest hotelRequest){
+    private String createEventAndReturnKey(TopicType topicType, HotelRequest hotelRequest) {
         String key = UUID.randomUUID().toString();
         String hotelJson = Objects.nonNull(hotelRequest) ? objectMapper.writeValueAsString(hotelRequest) : "";
         kafkaService.sendMessage(KafkaDto.builder()

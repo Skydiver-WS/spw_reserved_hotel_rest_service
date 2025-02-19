@@ -1,6 +1,5 @@
 package ru.project.reserved.system.hotel.rest.service.aop.impl;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.aop.HandlerResponse;
-import ru.project.reserved.system.hotel.rest.service.dto.ErrorType;
+import ru.project.reserved.system.hotel.rest.service.dto.type.ErrorType;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
 

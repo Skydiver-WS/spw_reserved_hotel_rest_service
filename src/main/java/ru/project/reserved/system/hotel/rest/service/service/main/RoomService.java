@@ -1,5 +1,6 @@
 package ru.project.reserved.system.hotel.rest.service.service.main;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import ru.project.reserved.system.hotel.rest.service.web.request.RoomRequest;
 import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
@@ -15,5 +16,7 @@ public interface RoomService {
 
     ResponseEntity<RoomResponse> updateRoom(RoomRequest roomRequest);
 
-    ResponseEntity<RoomResponse> deleteService(RoomRequest roomRequest);
+    ResponseEntity<RoomResponse> deleteService(Long hotelId, Long roomId);
+
+    ResponseEntity<RoomResponse> bookingRoom(@Valid RoomRequest roomRequest);
 }
