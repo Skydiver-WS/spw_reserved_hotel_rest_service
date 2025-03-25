@@ -9,7 +9,6 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.project.reserved.system.hotel.rest.service.aop.HandlerResponse;
 import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
 import ru.project.reserved.system.hotel.rest.service.dto.type.TopicType;
 import ru.project.reserved.system.hotel.rest.service.service.main.HotelService;
@@ -30,7 +29,6 @@ public class HotelServiceImpl implements HotelService {
     private final KafkaService kafkaService;
 
     @Override
-    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<List<HotelResponse>> findAllHotels() {
         String key = createEventAndReturnKey(TopicType.FIND_ALL_HOTEL, null);
         String response = kafkaService.getResponseFromKafka(key);
@@ -38,7 +36,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
     public ResponseEntity<List<HotelResponse>> searchHotelByParameters(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.FIND_BY_PARAMETER_HOTEL, hotelRequest);
@@ -48,7 +45,6 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @SneakyThrows
-    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     public ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.CREATE_HOTEL, hotelRequest);
         String response = kafkaService.getResponseFromKafka(key);
@@ -56,7 +52,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
     public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
         String key = createEventAndReturnKey(TopicType.UPDATE_HOTEL, hotelRequest);
@@ -64,7 +59,6 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    //@HandlerResponse(typeObjectResponse = HotelResponse.class)
     @SneakyThrows
     public ResponseEntity<HotelResponse> deleteService(Long hotelId) {
         String key = createEventAndReturnKey(TopicType.REMOVE_HOTEL, HotelRequest.builder()

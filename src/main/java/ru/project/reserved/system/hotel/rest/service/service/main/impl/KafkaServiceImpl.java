@@ -6,9 +6,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
+import ru.project.reserved.system.hotel.rest.service.exception.ServiceDbException;
 import ru.project.reserved.system.hotel.rest.service.listener.ListenerKafka;
 import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
 
@@ -41,17 +43,20 @@ public class KafkaServiceImpl implements KafkaService {
             log.info("Waiting response from db service. Attempt {}", count);
             count++;
         }
-        return null;
+       throw new ServiceDbException("Service db not response");
     }
 
     @Override
     public void sendMessage(KafkaDto kafkaDto, String message) {
-        log.info("Sending message to {}", message);
-        String key = UUID.randomUUID().toString();
+        try {
+            log.info("Sending message to {}", message);
+            kafkaTemplate.send(kafkaDto.getTopic().getTopic(),
+                    kafkaDto.getKey(), message);
+            log.info("Message send is successful");
+        } catch (Exception e){
+            throw new KafkaException(e.getMessage());
+        }
 
-        kafkaTemplate.send(kafkaDto.getTopic().getTopic(),
-                kafkaDto.getKey(), message);
-        log.info("Message send is successful");
     }
 
 }
