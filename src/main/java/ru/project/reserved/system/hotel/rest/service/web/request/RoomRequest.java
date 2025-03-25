@@ -1,8 +1,10 @@
 package ru.project.reserved.system.hotel.rest.service.web.request;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import ru.project.reserved.system.hotel.rest.service.dto.type.BookingOperationType;
 import ru.project.reserved.system.hotel.rest.service.dto.type.ClassRoomType;
 import ru.project.reserved.system.hotel.rest.service.dto.Photo;
 import ru.project.reserved.system.hotel.rest.service.dto.type.SortType;
@@ -11,12 +13,14 @@ import ru.project.reserved.system.hotel.rest.service.dto.type.StatusType;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoomRequest {
 
     private Long id;
@@ -29,7 +33,7 @@ public class RoomRequest {
 
     private StatusType statusType;
 
-    private ClassRoomType classType;
+    private ClassRoomType classRoomType;
 
     private Double coast;
 
@@ -54,7 +58,7 @@ public class RoomRequest {
         private Date endReserved;
         private SortType sortCoast;
         private Double coast;
-        private ClassRoomType classType;
+        private ClassRoomType classRoomType;
     }
 
     @Data
@@ -62,13 +66,12 @@ public class RoomRequest {
     @NoArgsConstructor
     @Builder
     public static class RoomBooking {
-        @NotNull
         private Long hotelId;
-        @NotNull
         private Date startReserved;
-        @NotNull
         private Date endReserved;
-        @NotNull
         private ClassRoomType classType;
+        private UUID bookingId;
+        @NotNull
+        private BookingOperationType operationType;
     }
 }

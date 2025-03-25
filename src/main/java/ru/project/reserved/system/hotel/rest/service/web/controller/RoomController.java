@@ -27,6 +27,16 @@ public class RoomController {
         return roomService.bookingRoom(roomRequest);
     }
 
+    @PutMapping("/booking/update")
+    public ResponseEntity<RoomResponse> bookingUpdateBooking(@RequestBody @Valid RoomRequest roomRequest) {
+        return roomService.bookingRoom(roomRequest);
+    }
+
+    @PutMapping("/booking/remove")
+    public ResponseEntity<RoomResponse> bookingRoomRemove(@RequestBody @Valid RoomRequest roomRequest) {
+        return roomService.bookingRoom(roomRequest);
+    }
+
     @PostMapping("/search")
     public ResponseEntity<List<RoomResponse>> findRooms(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.searchRoomByParameters(roomRequest);
@@ -44,6 +54,6 @@ public class RoomController {
 
     @DeleteMapping
     public ResponseEntity<RoomResponse> deleteRoom(@RequestParam Long hotelId, @RequestParam Long roomId) {
-        return roomService.deleteService(hotelId, roomId);
+        return roomService.deleteRoom(hotelId, roomId);
     }
 }

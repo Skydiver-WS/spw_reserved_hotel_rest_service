@@ -9,6 +9,7 @@ import ru.project.reserved.system.hotel.rest.service.dto.Photo;
 import ru.project.reserved.system.hotel.rest.service.dto.type.StatusType;
 
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -16,6 +17,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RoomResponse {
     private Long id;
+
+    private UUID bookingId;
 
     private Long numberApart;
 

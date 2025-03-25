@@ -29,6 +29,7 @@ public class RoomServiceImpl implements RoomService {
 
     private final KafkaService kafkaService;
     private final ObjectMapper objectMapper;
+
     @Override
     public ResponseEntity<List<RoomResponse>> findAllRooms() {
         String key = createEventAndReturnKey(TopicType.FIND_ALL_ROOM, null);
@@ -58,7 +59,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public ResponseEntity<RoomResponse> deleteService(Long hotelId, Long roomId) {
+    public ResponseEntity<RoomResponse> deleteRoom(Long hotelId, Long roomId) {
         String key = createEventAndReturnKey(TopicType.REMOVE_ROOM, RoomRequest.builder()
                 .id(roomId)
                 .hotelId(hotelId)
@@ -73,6 +74,7 @@ public class RoomServiceImpl implements RoomService {
         String response = kafkaService.getResponseFromKafka(key);
         return createResponseEntity(HttpStatus.OK, response);
     }
+
 
     @SneakyThrows
     private ResponseEntity<RoomResponse>  createResponseEntity(HttpStatus status, String body){
