@@ -7,9 +7,9 @@ import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 import java.util.List;
 
 public interface HotelService {
-    ResponseEntity<List<HotelResponse>> findAllHotels();
+    ResponseEntity<HotelResponse> findAllHotels();
 
-    ResponseEntity<List<HotelResponse>> searchHotelByParameters(HotelRequest hotelRequest);
+    ResponseEntity<HotelResponse> searchHotelByParameters(HotelRequest hotelRequest);
 
     ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest);
 

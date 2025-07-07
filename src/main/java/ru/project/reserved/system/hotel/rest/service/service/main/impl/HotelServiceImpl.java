@@ -1,97 +1,87 @@
 package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
-import ru.project.reserved.system.hotel.rest.service.dto.type.TopicType;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
+import ru.project.reserved.system.hotel.rest.service.properties.DbServiceRestProperties;
 import ru.project.reserved.system.hotel.rest.service.service.main.HotelService;
-import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
+import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
 import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 
-import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class HotelServiceImpl implements HotelService {
 
-    private final ObjectMapper objectMapper;
-    private final KafkaService kafkaService;
+    private final RestService restService;
+    private final DbServiceRestProperties prop;
 
     @Override
-    public ResponseEntity<List<HotelResponse>> findAllHotels() {
-        String key = createEventAndReturnKey(TopicType.FIND_ALL_HOTEL, null);
-        String response = kafkaService.getResponseFromKafka(key);
-        return createResponseEntityList(HttpStatus.OK, response);
+    public ResponseEntity<HotelResponse> findAllHotels() {
+        RestDataDto rq = createData(null);
+        return restService.sendData(rq, HotelResponse.class);
+
     }
 
     @Override
     @SneakyThrows
-    public ResponseEntity<List<HotelResponse>> searchHotelByParameters(HotelRequest hotelRequest) {
-        String key = createEventAndReturnKey(TopicType.FIND_BY_PARAMETER_HOTEL, hotelRequest);
-        String response = kafkaService.getResponseFromKafka(key);
-        return createResponseEntityList(HttpStatus.OK, response);
+    public ResponseEntity<HotelResponse> searchHotelByParameters(HotelRequest hotelRequest) {
+        RestDataDto rq = createData(hotelRequest);
+        return restService.sendData(rq, HotelResponse.class);
     }
 
     @Override
     @SneakyThrows
     public ResponseEntity<HotelResponse> createHotel(HotelRequest hotelRequest) {
-        String key = createEventAndReturnKey(TopicType.CREATE_HOTEL, hotelRequest);
-        String response = kafkaService.getResponseFromKafka(key);
-        return createResponseEntity(HttpStatus.CREATED, response);
+        RestDataDto rq = createData(hotelRequest);
+        return restService.sendData(rq, HotelResponse.class);
     }
 
     @Override
     @SneakyThrows
     public ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest) {
-        String key = createEventAndReturnKey(TopicType.UPDATE_HOTEL, hotelRequest);
-        return createResponseEntity(HttpStatus.OK, kafkaService.getResponseFromKafka(key));
+        RestDataDto rq = createData(hotelRequest);
+        return restService.sendData(rq, HotelResponse.class);
     }
 
     @Override
     @SneakyThrows
     public ResponseEntity<HotelResponse> deleteService(Long hotelId) {
-        String key = createEventAndReturnKey(TopicType.REMOVE_HOTEL, HotelRequest.builder()
-                .id(hotelId).build());
-        return createResponseEntity(HttpStatus.OK, kafkaService.getResponseFromKafka(key));
+        HotelRequest request = HotelRequest.builder()
+                .id(hotelId)
+                .build();
+        RestDataDto rq = createData(request);
+        return restService.sendData(rq, HotelResponse.class);
     }
 
-    @SneakyThrows
-    private ResponseEntity<HotelResponse> createResponseEntity(HttpStatus status, String body) {
-        return ResponseEntity.status(status)
-                .body(Strings.isNotBlank(body) ?
-                        objectMapper.readValue(body, HotelResponse.class) :
-                        null);
+
+    private RestDataDto createData(Object request){
+        return RestDataDto.builder()
+                //.headers() TODO://Сделать хэдер
+                .url(prop.getUrl() + getHttpAttributes().getRequestURI())
+                .method(HttpMethod.valueOf(getHttpAttributes().getMethod()))
+                .body(request)
+                .build();
     }
 
-    @SneakyThrows
-    private ResponseEntity<List<HotelResponse>> createResponseEntityList(HttpStatus status, String body) {
-        return ResponseEntity.status(status)
-                .body(Strings.isNotBlank(body) ?
-                        objectMapper.readValue(body, new TypeReference<>() {
-                        }) :
-                        null);
+    private HttpServletRequest getHttpAttributes(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attributes)){
+            log.error("ServletRequest is null");
+            throw new RuntimeException();
+        }
+        return attributes.getRequest();
     }
 
-    @SneakyThrows
-    private String createEventAndReturnKey(TopicType topicType, HotelRequest hotelRequest) {
-        String key = UUID.randomUUID().toString();
-        String hotelJson = Objects.nonNull(hotelRequest) ? objectMapper.writeValueAsString(hotelRequest) : "";
-        kafkaService.sendMessage(KafkaDto.builder()
-                .key(key)
-                .topic(topicType)
-                .build(), hotelJson);
-        return key;
-    }
 
 }

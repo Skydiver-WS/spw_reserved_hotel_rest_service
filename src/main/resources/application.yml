@@ -1,39 +1,15 @@
 server:
   port: 8082
 spring:
-  kafka:
-    bootstrap-servers: 127.0.0.1:9093 # ??????? ????? ?????? ??????? Kafka
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-      topic:
-        kafkaMessageGroupId: "data-base"
-
-
-
-    consumer:
-      group-id: data-base # ?????? ????????????
-      auto-offset-reset: earliest # ???????? ? ?????? ??????? ????????, ???? ???????? ?? ???????
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      topic:
-        topicList:
-          - hotel-response
-          - room-response
-          - create-hotel
-          - update-hotel
-          - find-all-hotel
-          - find-by-parameter-hotel
-          - remove-hotel
-          - create-room
-          - update-room
-          - find-all-room
-          - find-by-parameter-room
-          - remove-room
-          - reserved-room
-
   data:
    redis:
      host: 127.0.0.1
      port: 6379
      timeLiveMessages: 10m
+
+db:
+  service:
+    host: http://localhost:8081/booking-app/
+token:
+  signing:
+    key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855

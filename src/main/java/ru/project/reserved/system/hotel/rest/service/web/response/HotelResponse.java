@@ -25,4 +25,5 @@ public class HotelResponse {
     private List<Photo> photos;
     private String errorMessage;
     private String message;
+    private List<HotelResponse> hotels;
 }

@@ -9,13 +9,9 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.project.reserved.system.hotel.rest.service.dto.KafkaDto;
-import ru.project.reserved.system.hotel.rest.service.dto.type.TopicType;
-import ru.project.reserved.system.hotel.rest.service.service.main.KafkaService;
+import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
 import ru.project.reserved.system.hotel.rest.service.service.main.RoomService;
-import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
 import ru.project.reserved.system.hotel.rest.service.web.request.RoomRequest;
-import ru.project.reserved.system.hotel.rest.service.web.response.HotelResponse;
 import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
 
 import java.util.List;
@@ -97,7 +93,7 @@ public class RoomServiceImpl implements RoomService {
     private String createEventAndReturnKey(TopicType topicType, RoomRequest roomRequest){
         String key = UUID.randomUUID().toString();
         String hotelJson = Objects.nonNull(roomRequest) ? objectMapper.writeValueAsString(roomRequest) : "";
-        kafkaService.sendMessage(KafkaDto.builder()
+        kafkaService.sendMessage(RestDataDto.builder()
                 .key(key)
                 .topic(topicType)
                 .build(), hotelJson);
