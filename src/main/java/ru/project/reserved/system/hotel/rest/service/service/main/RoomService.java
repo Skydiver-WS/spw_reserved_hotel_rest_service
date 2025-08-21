@@ -8,9 +8,9 @@ import ru.project.reserved.system.hotel.rest.service.web.response.RoomResponse;
 import java.util.List;
 
 public interface RoomService {
-    ResponseEntity<List<RoomResponse>> findAllRooms();
+    ResponseEntity<RoomResponse> findAllRooms();
 
-    ResponseEntity<List<RoomResponse>> searchRoomByParameters(RoomRequest roomRequest);
+    ResponseEntity<RoomResponse> searchRoomByParameters(RoomRequest roomRequest);
 
     ResponseEntity<RoomResponse> createRoom(RoomRequest roomRequest);
 

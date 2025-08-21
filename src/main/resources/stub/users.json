@@ -1,0 +1,641 @@
+[
+  {
+    "username": "admin1",
+    "password": "AdminPass123!",
+    "inn": "770123456789",
+    "ogrn": "1027700132195",
+    "address": "Москва, ул. Тверская, д. 1",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "hotel_owner1",
+    "password": "HotelOwner456!",
+    "inn": "771234567890",
+    "ogrn": "1027712345678",
+    "address": "Санкт-Петербург, Невский пр., д. 25",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "manager_emp1",
+    "password": "ManagerEmp789!",
+    "inn": "772345678901",
+    "ogrn": "1027723456789",
+    "address": "Казань, ул. Баумана, д. 15",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "client1",
+    "password": "ClientPass123!",
+    "inn": "773456789012",
+    "ogrn": "1027734567890",
+    "address": "Екатеринбург, ул. Ленина, д. 42",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "admin_hotel_combo",
+    "password": "ComboPass456!",
+    "inn": "774567890123",
+    "ogrn": "1027745678901",
+    "address": "Новосибирск, Красный пр., д. 33",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      },
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "hotel_manager_combo",
+    "password": "HotelManager789!",
+    "inn": "775678901234",
+    "ogrn": "1027756789012",
+    "address": "Сочи, ул. Навагинская, д. 7",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      },
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "client_vip1",
+    "password": "VipClient123!",
+    "inn": "776789012345",
+    "ogrn": "1027767890123",
+    "address": "Калининград, Ленинский пр., д. 18",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      },
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "admin2",
+    "password": "Admin2Pass789!",
+    "inn": "777890123456",
+    "ogrn": "1027778901234",
+    "address": "Владивосток, ул. Светланская, д. 22",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "grand_hotel",
+    "password": "GrandHotel123!",
+    "inn": "778901234567",
+    "ogrn": "1027789012345",
+    "address": "Краснодар, ул. Красная, д. 55",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "emp_manager2",
+    "password": "EmpManager456!",
+    "inn": "779012345678",
+    "ogrn": "1027790123456",
+    "address": "Уфа, ул. Ленина, д. 10",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "client2",
+    "password": "Client2Pass789!",
+    "inn": "780123456789",
+    "ogrn": "1027801234567",
+    "address": "Ростов-на-Дону, ул. Большая Садовая, д. 67",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "super_admin",
+    "password": "SuperAdmin123!",
+    "inn": "781234567890",
+    "ogrn": "1027812345678",
+    "address": "Нижний Новгород, ул. Большая Покровская, д. 2",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      },
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      },
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "sunrise_hotel",
+    "password": "SunrisePass456!",
+    "inn": "782345678901",
+    "ogrn": "1027823456789",
+    "address": "Самара, ул. Куйбышева, д. 89",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "staff_manager3",
+    "password": "StaffManager789!",
+    "inn": "783456789012",
+    "ogrn": "1027834567890",
+    "address": "Волгоград, пр. Ленина, д. 31",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "business_client",
+    "password": "BusinessPass123!",
+    "inn": "784567890123",
+    "ogrn": "1027845678901",
+    "address": "Пермь, ул. Ленина, д. 44",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "admin_support",
+    "password": "SupportAdmin456!",
+    "inn": "785678901234",
+    "ogrn": "1027856789012",
+    "address": "Воронеж, пр. Революции, д. 12",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "premium_hotel",
+    "password": "PremiumHotel789!",
+    "inn": "786789012345",
+    "ogrn": "1027867890123",
+    "address": "Красноярск, ул. Карла Маркса, д. 76",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "hr_manager",
+    "password": "HrManager123!",
+    "inn": "787890123456",
+    "ogrn": "1027878901234",
+    "address": "Иркутск, ул. Ленина, д. 19",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "frequent_client",
+    "password": "FrequentPass456!",
+    "inn": "788901234567",
+    "ogrn": "1027889012345",
+    "address": "Хабаровск, ул. Муравьева-Амурского, д. 8",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "system_admin",
+    "password": "SystemAdmin789!",
+    "inn": "789012345678",
+    "ogrn": "1027890123456",
+    "address": "Ярославль, ул. Кирова, д. 23",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "ocean_view_hotel",
+    "password": "OceanView123!",
+    "inn": "790123456789",
+    "ogrn": "1027901234567",
+    "address": "Севастополь, ул. Ленина, д. 11",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "operations_manager",
+    "password": "Operations456!",
+    "inn": "791234567890",
+    "ogrn": "1027912345678",
+    "address": "Тюмень, ул. Республики, д. 34",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "corporate_client",
+    "password": "Corporate789!",
+    "inn": "792345678901",
+    "ogrn": "1027923456789",
+    "address": "Омск, ул. Ленина, д. 27",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "tech_admin",
+    "password": "TechAdmin123!",
+    "inn": "793456789012",
+    "ogrn": "1027934567890",
+    "address": "Тула, пр. Ленина, д. 41",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "city_hotel",
+    "password": "CityHotel456!",
+    "inn": "794567890123",
+    "ogrn": "1027945678901",
+    "address": "Архангельск, ул. Воскресенская, д. 5",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "front_desk_manager",
+    "password": "FrontDesk789!",
+    "inn": "795678901234",
+    "ogrn": "1027956789012",
+    "address": "Владимир, ул. Большая Московская, д. 16",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "family_client",
+    "password": "FamilyPass123!",
+    "inn": "796789012345",
+    "ogrn": "1027967890123",
+    "address": "Смоленск, ул. Ленина, д. 9",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "network_admin",
+    "password": "Network456!",
+    "inn": "797890123456",
+    "ogrn": "1027978901234",
+    "address": "Курск, ул. Ленина, д. 22",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "boutique_hotel",
+    "password": "Boutique789!",
+    "inn": "798901234567",
+    "ogrn": "1027989012345",
+    "address": "Белгород, ул. Попова, д. 14",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "housekeeping_mgr",
+    "password": "Housekeeping123!",
+    "inn": "799012345678",
+    "ogrn": "1027990123456",
+    "address": "Липецк, ул. Зегеля, д. 7",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "tourist_client",
+    "password": "Tourist456!",
+    "inn": "800123456789",
+    "ogrn": "1028001234567",
+    "address": "Псков, ул. Советская, д. 3",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "security_admin",
+    "password": "Security789!",
+    "inn": "801234567890",
+    "ogrn": "1028012345678",
+    "address": "Ставрополь, пр. Карла Маркса, д. 28",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "resort_hotel",
+    "password": "ResortPass123!",
+    "inn": "802345678901",
+    "ogrn": "1028023456789",
+    "address": "Кисловодск, ул. Курортный бульвар, д. 19",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "food_beverage_mgr",
+    "password": "FoodBev456!",
+    "inn": "803456789012",
+    "ogrn": "1028034567890",
+    "address": "Анапа, ул. Крымская, д. 12",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "group_client",
+    "password": "GroupPass789!",
+    "inn": "804567890123",
+    "ogrn": "1028045678901",
+    "address": "Геленджик, ул. Луначарского, д. 6",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "db_admin",
+    "password": "DbAdmin123!",
+    "inn": "805678901234",
+    "ogrn": "1028056789012",
+    "address": "Мурманск, ул. Ленина, д. 75",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "airport_hotel",
+    "password": "Airport456!",
+    "inn": "806789012345",
+    "ogrn": "1028067890123",
+    "address": "Минеральные Воды, ул. Аэропортовая, д. 2",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "sales_manager",
+    "password": "SalesMgr789!",
+    "inn": "807890123456",
+    "ogrn": "1028078901234",
+    "address": "Нальчик, пр. Ленина, д. 17",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "loyalty_client",
+    "password": "Loyalty123!",
+    "inn": "808901234567",
+    "ogrn": "1028089012345",
+    "address": "Чебоксары, ул. К. Маркса, д. 33",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "backup_admin",
+    "password": "Backup456!",
+    "inn": "809012345678",
+    "ogrn": "1028090123456",
+    "address": "Саранск, ул. Советская, д. 24",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "business_hotel",
+    "password": "BusinessHotel789!",
+    "inn": "810123456789",
+    "ogrn": "1028101234567",
+    "address": "Ульяновск, ул. Гончарова, д. 13",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "reception_manager",
+    "password": "Reception123!",
+    "inn": "811234567890",
+    "ogrn": "1028112345678",
+    "address": "Курган, ул. Гоголя, д. 8",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "international_client",
+    "password": "International456!",
+    "inn": "812345678901",
+    "ogrn": "1028123456789",
+    "address": "Чита, ул. Ленина, д. 56",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "cloud_admin",
+    "password": "CloudAdmin789!",
+    "inn": "813456789012",
+    "ogrn": "1028134567890",
+    "address": "Брянск, пр. Ленина, д. 29",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "spa_hotel",
+    "password": "SpaHotel123!",
+    "inn": "814567890123",
+    "ogrn": "1028145678901",
+    "address": "Ессентуки, ул. Интернациональная, д. 4",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "event_manager",
+    "password": "EventMgr456!",
+    "inn": "815678901234",
+    "ogrn": "1028156789012",
+    "address": "Пятигорск, ул. Кирова, д. 21",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "premium_client",
+    "password": "PremiumClient789!",
+    "inn": "816789012345",
+    "ogrn": "1028167890123",
+    "address": "Махачкала, ул. М. Гаджиева, д. 15",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "devops_admin",
+    "password": "DevOps123!",
+    "inn": "817890123456",
+    "ogrn": "1028178901234",
+    "address": "Вологда, ул. Мира, д. 11",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  },
+  {
+    "username": "historic_hotel",
+    "password": "Historic456!",
+    "inn": "818901234567",
+    "ogrn": "1028189012345",
+    "address": "Кострома, ул. Советская, д. 7",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_HOTEL"
+      }
+    ]
+  },
+  {
+    "username": "training_manager",
+    "password": "Training789!",
+    "inn": "819012345678",
+    "ogrn": "1028190123456",
+    "address": "Тверь, ул. Трехсвятская, д. 18",
+    "role": [
+      {
+        "rolesType": "ROLE_MANAGER_EMPLOYEE"
+      }
+    ]
+  },
+  {
+    "username": "vip_client",
+    "password": "VipClient456!",
+    "inn": "820123456789",
+    "ogrn": "1028201234567",
+    "address": "Иваново, пр. Ленина, д. 32",
+    "role": [
+      {
+        "rolesType": "ROLE_CLIENT"
+      }
+    ]
+  },
+  {
+    "username": "final_admin",
+    "password": "FinalAdmin789!",
+    "inn": "821234567890",
+    "ogrn": "1028212345678",
+    "address": "Орёл, ул. Ленина, д. 25",
+    "role": [
+      {
+        "rolesType": "ROLE_ADMIN"
+      }
+    ]
+  }
+]

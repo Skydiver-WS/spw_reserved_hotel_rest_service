@@ -2,10 +2,12 @@ server:
   port: 8082
 spring:
   data:
-   redis:
-     host: 127.0.0.1
-     port: 6379
-     timeLiveMessages: 10m
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      timeLiveMessages: 10m
+  profiles:
+    active: @spring.profiles.active@
 
 db:
   service:

@@ -1,35 +1,37 @@
 package ru.project.reserved.system.hotel.rest.service.service.security;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import ru.project.reserved.system.hotel.rest.service.dto.AuthUserRequestDto;
 
 import java.util.Collection;
-import java.util.List;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Service
-public class UserDetailsService implements UserDetails {
+public class AppUserPrincipalService implements UserDetails {
+
+    private final AuthUserRequestDto user;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return user.getRole().stream()
+                .map(r -> new SimpleGrantedAuthority(r.getRolesType().name()))
+                .toList();
     }
 
     @Override
     public String getPassword() {
-        return "";
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return "";
+        return user.getUsername();
     }
 
     @Override
