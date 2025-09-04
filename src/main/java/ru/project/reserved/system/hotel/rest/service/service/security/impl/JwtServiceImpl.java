@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.project.reserved.system.hotel.rest.service.properties.TokenProperties;
 import ru.project.reserved.system.hotel.rest.service.service.security.JwtService;
 
 import javax.crypto.SecretKey;
@@ -21,11 +22,9 @@ import java.util.UUID;
 @Component
 public class JwtServiceImpl implements JwtService {
 
-    @Value("${token.signing.key}")
-    private String secretToken;
+    private final TokenProperties tokenProperties;
 
-    @Value("${token.expiration}")
-    private Duration expirationToken;
+
 
     @Override
     public String extractUserName(String jwtToken) {
@@ -42,7 +41,7 @@ public class JwtServiceImpl implements JwtService {
                 .and()
                 .subject(username + " " + password)
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + expirationToken.toMillis()))
+                .expiration(new Date(new Date().getTime() + tokenProperties.getExpiration().toMillis()))
                 .signWith(getKey())
                 .compact();
     }

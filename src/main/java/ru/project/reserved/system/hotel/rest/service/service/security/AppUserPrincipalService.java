@@ -1,6 +1,7 @@
 package ru.project.reserved.system.hotel.rest.service.service.security;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +14,14 @@ import java.util.Collection;
 @Setter
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class AppUserPrincipalService implements UserDetails {
 
     private final AuthUserRequestDto user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        log.info("Get authorities role type");
         return user.getRole().stream()
                 .map(r -> new SimpleGrantedAuthority(r.getRolesType().name()))
                 .toList();

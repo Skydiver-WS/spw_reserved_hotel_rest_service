@@ -16,4 +16,13 @@ public class ControllerException {
                 .build());
 
     }
+
+    @ExceptionHandler({SecurityException.class})
+    public ResponseEntity<ExceptionResponse> exceptionResponse(SecurityException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionResponse.builder()
+                        .message(e.getMessage())
+                        .build());
+
+    }
 }
