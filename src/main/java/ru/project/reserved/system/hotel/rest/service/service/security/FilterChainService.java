@@ -18,6 +18,7 @@ import ru.project.reserved.system.hotel.rest.service.dto.Redis;
 import ru.project.reserved.system.hotel.rest.service.exception.SecurityException;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,6 +28,7 @@ public class FilterChainService extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final UserDetailsFromCacheService userDetailsFromCacheService;
     private final RedisTemplate<UUID, Redis> redisTemplate;
 
     @Override
@@ -44,17 +46,26 @@ public class FilterChainService extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UUID keyId = UUID.fromString(jwtService.getHeader(token).getKeyId());
+            Optional<Redis> optionalToken = Optional.ofNullable(redisTemplate.opsForValue().get(keyId));
+            boolean tokenCache = optionalToken.isPresent();
+            UserDetails userDetails;
+            if (tokenCache) {
+                log.info("Log get in cache");
+                userDetails = userDetailsFromCacheService.loadUserByUsername(token);
+            } else {
+                log.info("Log get in secure database service");
+                userDetails = userDetailsService.loadUserByUsername(username);
+            }
             if (jwtService.isValidToken(token)) {
-               authenticate(userDetails, request);
+                authenticate(userDetails, request);
             }
         }
         filterChain.doFilter(request, response);
     }
 
-     private void authenticate(UserDetails userDetails, HttpServletRequest request) {
+    private void authenticate(UserDetails userDetails, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,

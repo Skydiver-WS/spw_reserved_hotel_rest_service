@@ -37,8 +37,9 @@ public class AuthServiceImpl implements AuthService {
                 userRequest.getPassword()));
         AuthUserRequestDto user = userService.getUser(userRequest.getUsername())
                 .orElseThrow(() -> new ServiceDbException("User not found"));
-        String jwt = jwtService.generateToken(user.getUsername(), user.getPassword());
-        redisTemplate.opsForValue().set(UUID.randomUUID(), Redis.builder()
+        String jwt = jwtService.generateToken(user.getUsername(), user.getPassword(), user.getRole());
+        String idKey = jwtService.getHeader(jwt).getKeyId();
+        redisTemplate.opsForValue().set(UUID.fromString(idKey), Redis.builder()
                 .token(jwt)
                 .build(), tokenProperties.getExpiration());
         return UserResponse.builder()

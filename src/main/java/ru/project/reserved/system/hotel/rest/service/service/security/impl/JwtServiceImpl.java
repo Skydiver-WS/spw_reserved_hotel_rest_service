@@ -9,12 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import ru.project.reserved.system.hotel.rest.service.dto.Role;
 import ru.project.reserved.system.hotel.rest.service.properties.TokenProperties;
 import ru.project.reserved.system.hotel.rest.service.service.security.JwtService;
 
 import javax.crypto.SecretKey;
 import java.time.Duration;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -28,18 +30,20 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public String extractUserName(String jwtToken) {
-        return "";
+        Claims claims = decoderToken(jwtToken);
+        return claims.getSubject();
     }
 
 
     @Override
-    public String generateToken(String username, String password) {
+    public String generateToken(String username, String password, List<Role> role) {
         return Jwts.builder()
                 .header()
                 .keyId(UUID.randomUUID().toString())
                 .add(username, password)
+                .add("roles", role)
                 .and()
-                .subject(username + " " + password)
+                .subject(username)
                 .issuedAt(new Date())
                 .expiration(new Date(new Date().getTime() + tokenProperties.getExpiration().toMillis()))
                 .signWith(getKey())
@@ -47,8 +51,8 @@ public class JwtServiceImpl implements JwtService {
     }
 
     private SecretKey getKey() {
-        //  byte[] keyBytes = Decoders.BASE64.decode(secretToken);
-        return Jwts.SIG.HS512.key().build();
+        byte[] keyBytes = Decoders.BASE64.decode(tokenProperties.getKey());
+        return Keys.hmacShaKeyFor(keyBytes);
     }
 
     @Override
@@ -58,6 +62,15 @@ public class JwtServiceImpl implements JwtService {
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
+    }
+
+    @Override
+    public JwsHeader getHeader(String token) {
+        return Jwts.parser()
+                .verifyWith(getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getHeader();
     }
 
     @Override
