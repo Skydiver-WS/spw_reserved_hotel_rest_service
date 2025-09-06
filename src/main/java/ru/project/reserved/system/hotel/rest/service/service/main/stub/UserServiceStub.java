@@ -34,14 +34,15 @@ public class UserServiceStub implements UserService {
 
     @Override
     @SneakyThrows
-    public Optional<AuthUserRequestDto> getUser(String username) {
+    public Optional<UserResponse> getUser(String username) {
         log.info("Getting user stub {}", username);
         List<AuthUserRequestDto> listUsers = objectMapper.readValue(new File("src/main/resources/stub/users.json"),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, AuthUserRequestDto.class));
-        return listUsers
+        return Optional.of(userMapper.userResponseFromAuthUserDto(listUsers
                 .stream()
                 .filter(u -> u.getUsername().equals(username))
-                .findFirst();
+                .findFirst()
+                .orElse(new AuthUserRequestDto())));
     }
 
     @Override

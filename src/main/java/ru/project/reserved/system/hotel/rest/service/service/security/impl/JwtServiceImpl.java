@@ -14,7 +14,6 @@ import ru.project.reserved.system.hotel.rest.service.properties.TokenProperties;
 import ru.project.reserved.system.hotel.rest.service.service.security.JwtService;
 
 import javax.crypto.SecretKey;
-import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;

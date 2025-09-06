@@ -16,5 +16,7 @@ public interface UserMapper {
 
     UserResponse userResponseFromAuthUserDto(AuthUserRequestDto authUserRequestDto);
 
+    AuthUserRequestDto authUserRequestFromUserResponse(UserResponse userResponse);
+
     List<UserResponse> listUserResponseFromAuthUserDtoList(List<AuthUserRequestDto> authUserRequestDtoList);
 }

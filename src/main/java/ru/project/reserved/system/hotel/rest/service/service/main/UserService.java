@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface UserService {
 
     List<UserResponse> getAllUsers();
-    Optional<AuthUserRequestDto> getUser(String username);
+    Optional<UserResponse> getUser(String username);
     boolean createUser(AuthUserRequestDto authUserRequestDto);
     boolean updateUser(AuthUserRequestDto authUserRequestDto);
     boolean deleteUser(String username);

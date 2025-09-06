@@ -35,7 +35,7 @@ public class AuthServiceImpl implements AuthService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 userRequest.getUsername(),
                 userRequest.getPassword()));
-        AuthUserRequestDto user = userService.getUser(userRequest.getUsername())
+        UserResponse user = userService.getUser(userRequest.getUsername())
                 .orElseThrow(() -> new ServiceDbException("User not found"));
         String jwt = jwtService.generateToken(user.getUsername(), user.getPassword(), user.getRole());
         String idKey = jwtService.getHeader(jwt).getKeyId();

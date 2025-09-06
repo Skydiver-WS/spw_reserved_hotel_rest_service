@@ -68,7 +68,7 @@ public class HotelServiceImpl implements HotelService {
     private RestDataDto createData(Object request){
         return RestDataDto.builder()
                 //.headers() TODO://Сделать хэдер
-                .url(prop.getUrl() + getHttpAttributes().getRequestURI())
+                .url(prop.getHostAuthDb() + getHttpAttributes().getRequestURI())
                 .method(HttpMethod.valueOf(getHttpAttributes().getMethod()))
                 .body(request)
                 .build();

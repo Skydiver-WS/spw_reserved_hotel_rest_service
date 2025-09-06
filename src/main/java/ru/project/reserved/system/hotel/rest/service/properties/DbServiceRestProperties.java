@@ -1,14 +1,16 @@
 package ru.project.reserved.system.hotel.rest.service.properties;
 
 import lombok.Data;
-import lombok.Getter;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "db.service")
 @Data
 public class DbServiceRestProperties {
 
-    private String url;
+    @Value("${db.service.data.host}")
+    private String hostData;
+
+    @Value("${db.service.auth.host}")
+    private String hostAuthDb;
 }
