@@ -2,6 +2,7 @@ package ru.project.reserved.system.hotel.rest.service.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.project.reserved.system.hotel.rest.service.service.main.HotelService;
 import ru.project.reserved.system.hotel.rest.service.web.request.HotelRequest;
@@ -27,16 +28,19 @@ public class HotelController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
     public ResponseEntity<HotelResponse> createHotel(@RequestBody HotelRequest hotelRequest){
         return hotelService.createHotel(hotelRequest);
     }
 
     @PutMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
     public ResponseEntity<HotelResponse> updateHotel(@RequestBody HotelRequest hotelRequest){
         return hotelService.updateHotel(hotelRequest);
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<HotelResponse> deleteHotel(@RequestParam Long id){
         return hotelService.deleteService(id);
     }

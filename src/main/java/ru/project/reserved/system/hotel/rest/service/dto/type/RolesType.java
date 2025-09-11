@@ -9,7 +9,7 @@ public enum RolesType {
 
     ROLE_ADMIN("администратор сервиса"),
     ROLE_MANAGER_HOTEL("владелец отеля"),
-    ROLE_MANAGER_EMPLOYEE("управляющий отеля"),
+    ROLE_EMPLOYEE("сотрудник отеля"),
     ROLE_CLIENT("клиент");
 
     private final String descriptionRole;
