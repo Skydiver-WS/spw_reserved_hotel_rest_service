@@ -46,20 +46,26 @@ public class UserServiceStub implements UserService {
     }
 
     @Override
-    public boolean createUser(AuthUserRequestDto authUserRequestDto) {
+    public UserResponse createUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Creating user stub {}", authUserRequestDto.getUsername());
-        return true;
+        return UserResponse.builder()
+                .message("User created")
+                .build();
     }
 
     @Override
-    public boolean updateUser(AuthUserRequestDto authUserRequestDto) {
+    public UserResponse updateUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Updating user stub {}", authUserRequestDto.getUsername());
-        return true;
+        return UserResponse.builder()
+                .message("User updated")
+                .build();
     }
 
     @Override
-    public boolean deleteUser(String username) {
+    public UserResponse deleteUser(String username) {
         log.info("Deleting user stub {}", username);
-        return true;
+        return UserResponse.builder()
+                .message("User delete")
+                .build();
     }
 }

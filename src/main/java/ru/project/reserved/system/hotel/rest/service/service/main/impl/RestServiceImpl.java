@@ -8,6 +8,8 @@ import org.springframework.web.client.RestClient;
 import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
 import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
 
+import java.util.Objects;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +21,9 @@ public class RestServiceImpl implements RestService {
     @Override
     public <T> ResponseEntity<T> sendData(RestDataDto restDataDto, Class<T> type) {
         return restClient.method(restDataDto.getMethod())
+                .uri(restDataDto.getUrl())
                 .headers(h -> h.addAll(restDataDto.getHeaders()))
-                .body(restDataDto.getBody())
+                .body(Objects.nonNull(restDataDto.getBody()) ? restDataDto.getBody() : "")
                 .retrieve()
                 .toEntity(type);
     }

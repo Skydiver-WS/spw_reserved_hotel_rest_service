@@ -3,6 +3,7 @@ package ru.project.reserved.system.hotel.rest.service.configuration;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.project.reserved.system.hotel.rest.service.properties.SecurityProperties;
 import ru.project.reserved.system.hotel.rest.service.service.security.FilterChainService;
 
 @Configuration
@@ -31,11 +33,12 @@ import ru.project.reserved.system.hotel.rest.service.service.security.FilterChai
 public class SecurityConfiguration {
 
     private final FilterChainService jwtFilterService;
+    private final SecurityProperties securityProperties;
 
     @Bean
-    @Profile("!stub")
+    @Profile("!stub && prod")
     public PasswordEncoder dbPasswordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(securityProperties.getLevelCrypto());
     }
 
     @Bean

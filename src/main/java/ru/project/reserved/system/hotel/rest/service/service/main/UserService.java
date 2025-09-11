@@ -11,7 +11,7 @@ public interface UserService {
 
     List<UserResponse> getAllUsers();
     Optional<UserResponse> getUser(String username);
-    boolean createUser(AuthUserRequestDto authUserRequestDto);
-    boolean updateUser(AuthUserRequestDto authUserRequestDto);
-    boolean deleteUser(String username);
+    UserResponse createUser(AuthUserRequestDto authUserRequestDto);
+    UserResponse updateUser(AuthUserRequestDto authUserRequestDto);
+    UserResponse deleteUser(String username);
 }

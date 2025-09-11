@@ -6,11 +6,9 @@ import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.dto.Role;
-import ru.project.reserved.system.hotel.rest.service.properties.TokenProperties;
+import ru.project.reserved.system.hotel.rest.service.properties.SecurityProperties;
 import ru.project.reserved.system.hotel.rest.service.service.security.JwtService;
 
 import javax.crypto.SecretKey;
@@ -23,7 +21,7 @@ import java.util.UUID;
 @Component
 public class JwtServiceImpl implements JwtService {
 
-    private final TokenProperties tokenProperties;
+    private final SecurityProperties securityProperties;
 
 
 
@@ -44,13 +42,13 @@ public class JwtServiceImpl implements JwtService {
                 .and()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + tokenProperties.getExpiration().toMillis()))
+                .expiration(new Date(new Date().getTime() + securityProperties.getExpiration().toMillis()))
                 .signWith(getKey())
                 .compact();
     }
 
     private SecretKey getKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(tokenProperties.getKey());
+        byte[] keyBytes = Decoders.BASE64.decode(securityProperties.getKey());
         return Keys.hmacShaKeyFor(keyBytes);
     }
 

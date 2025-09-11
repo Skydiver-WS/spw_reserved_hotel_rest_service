@@ -24,9 +24,7 @@ public class UserController {
 
     @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest) {
-        userService.createUser(userRequest);
-        return ResponseEntity.ok(UserResponse.builder()
-                .build());
+        return ResponseEntity.ok(userService.createUser(userRequest));
     }
 
     @PostMapping("/sing-in")
@@ -37,22 +35,20 @@ public class UserController {
 
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
-    public ResponseEntity<Void> updateUser(@RequestBody UserRequest userRequest){
-        boolean update = userService.updateUser(userRequest);
-        return update ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest, @RequestParam String user){
+        userRequest.setUser(user);
+        return ResponseEntity.ok(userService.updateUser(userRequest));
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
-    public ResponseEntity<Void> deleteUser(@RequestBody UserRequest userRequest){
-        boolean update = userService.deleteUser(userRequest.getUsername());
-        return update ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.BAD_GATEWAY).build();
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    public ResponseEntity<UserResponse> deleteUser(@RequestBody UserRequest userRequest){
+        return ResponseEntity.ok(userService.deleteUser(userRequest.getUsername()));
     }
 
 
     @GetMapping("/all-users")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
 

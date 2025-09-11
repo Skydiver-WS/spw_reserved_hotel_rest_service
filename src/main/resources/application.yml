@@ -12,10 +12,11 @@ spring:
 db:
   service:
     data:
-     host: http://localhost:8081/booking-app/
+     host: http://localhost:8081/booking-app
     auth:
-      host: http://localhost:8083/auth-db-app/
+      host: http://localhost:8084/auth-db-app
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
     expiration: 10m
+    levelCrypto: 10

@@ -14,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 public class AuthUserRequestDto {
+    private String user;
     private String username;
     private String password;
     private String inn;

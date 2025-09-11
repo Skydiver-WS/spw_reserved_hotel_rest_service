@@ -9,7 +9,8 @@ import java.time.Duration;
 @Component
 @Data
 @ConfigurationProperties(prefix = "token.signing")
-public class TokenProperties {
+public class SecurityProperties {
     private String key;
     private Duration expiration;
+    private Integer levelCrypto;
 }

@@ -66,7 +66,7 @@ public class RoomServiceImpl implements RoomService {
     private RestDataDto createData(Object request) {
         return RestDataDto.builder()
                 //.headers() TODO://Сделать хэдер
-                .url(prop.getUrl() + getHttpAttributes().getRequestURI())
+                .url(prop.getHostData() + getHttpAttributes().getRequestURI())
                 .method(HttpMethod.valueOf(getHttpAttributes().getMethod()))
                 .body(request)
                 .build();
