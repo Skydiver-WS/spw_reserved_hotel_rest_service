@@ -1,5 +1,6 @@
 package ru.project.reserved.system.hotel.rest.service.service.security.impl;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwsHeader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,10 @@ public class UserDetailsFromCacheServiceImpl implements UserDetailsFromCacheServ
     @Override
     public UserDetails loadUserByUsername(String jwt) {
         JwsHeader header = jwtService.getHeader(jwt);
+        Claims claims = jwtService.decoderToken(jwt);
         List<Map<String, Object>> obj = (List<Map<String, Object>>) header.get("roles");
+        String username = (String) claims.get("sub");
+        String password = (String) header.get(username);
         return new UserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -38,12 +42,12 @@ public class UserDetailsFromCacheServiceImpl implements UserDetailsFromCacheServ
 
             @Override
             public String getPassword() {
-                return "";
+                return password;
             }
 
             @Override
             public String getUsername() {
-                return "";
+                return username;
             }
         };
     }

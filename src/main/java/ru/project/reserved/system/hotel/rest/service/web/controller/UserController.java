@@ -48,14 +48,16 @@ public class UserController {
 
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    @PreAuthorize("(hasAnyRole('ROLE_MANAGER', 'ROLE_CLIENT') && #user.equals(authentication.principal.username)) " +
+            "or (hasAnyRole('ROLE_ADMIN'))")
     public ResponseEntity<UserResponse> updateUser(@RequestBody UserRequest userRequest, @RequestParam String user){
         userRequest.setUser(user);
         return ResponseEntity.ok(userService.updateUser(userRequest));
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    @PreAuthorize("(hasAnyRole('ROLE_MANAGER', 'ROLE_CLIENT') and #userRequest.username.equals(authentication.principal.username)) " +
+            "or hasRole('ROLE_ADMIN')")
     public ResponseEntity<UserResponse> deleteUser(@RequestBody UserRequest userRequest){
         return ResponseEntity.ok(userService.deleteUser(userRequest.getUsername()));
     }
