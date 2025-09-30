@@ -20,6 +20,7 @@ public class RestServiceImpl implements RestService {
 
     @Override
     public <T> ResponseEntity<T> sendData(RestDataDto restDataDto, Class<T> type) {
+        log.info("Send data to {}", restDataDto.getUrl());
         return restClient.method(restDataDto.getMethod())
                 .uri(restDataDto.getUrl())
                 .headers(h -> h.addAll(restDataDto.getHeaders()))

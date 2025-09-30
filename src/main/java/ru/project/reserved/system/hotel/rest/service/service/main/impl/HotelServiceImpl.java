@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -56,19 +57,18 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     @SneakyThrows
-    public ResponseEntity<HotelResponse> deleteService(Long hotelId) {
-        HotelRequest request = HotelRequest.builder()
-                .id(hotelId)
-                .build();
-        RestDataDto rq = createData(request);
+    public ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest) {
+        RestDataDto rq = createData(hotelRequest);
         return restService.sendData(rq, HotelResponse.class);
     }
 
 
     private RestDataDto createData(Object request){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
         return RestDataDto.builder()
-                //.headers() TODO://Сделать хэдер
-                .url(prop.getHostAuthDb() + getHttpAttributes().getRequestURI())
+                .headers(headers)
+                .url(prop.getHostData() + getHttpAttributes().getRequestURI())
                 .method(HttpMethod.valueOf(getHttpAttributes().getMethod()))
                 .body(request)
                 .build();

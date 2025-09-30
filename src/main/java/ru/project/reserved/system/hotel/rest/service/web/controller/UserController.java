@@ -14,6 +14,7 @@ import ru.project.reserved.system.hotel.rest.service.web.request.UserRequest;
 import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/user")

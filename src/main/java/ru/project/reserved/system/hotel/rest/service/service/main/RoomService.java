@@ -16,7 +16,7 @@ public interface RoomService {
 
     ResponseEntity<RoomResponse> updateRoom(RoomRequest roomRequest);
 
-    ResponseEntity<RoomResponse> deleteRoom(Long hotelId, Long roomId);
+    ResponseEntity<RoomResponse> deleteRoom(RoomRequest roomRequest);
 
     ResponseEntity<RoomResponse> bookingRoom(@Valid RoomRequest roomRequest);
 

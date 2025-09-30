@@ -11,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import ru.project.reserved.system.hotel.rest.service.dto.Redis;
 import ru.project.reserved.system.hotel.rest.service.properties.RedisProperties;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Configuration
@@ -32,6 +33,11 @@ public class RedisConfiguration {
     public RedisConnectionFactory redisConnectionFactory() {
         log.info("Creating connect");
         return new LettuceConnectionFactory(redisProperties.getHost(), redisProperties.getPort());
+    }
+    @Bean
+    public Date createdate(){
+        log.info(new Date().toString());
+        return new Date();
     }
 
 }

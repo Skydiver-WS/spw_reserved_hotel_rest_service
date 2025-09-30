@@ -16,6 +16,7 @@ public class HotelResponse {
     private Long id;
     private String name;
     private String description;
+    private String city;
     private String address;
     private Double distance;
     private Double minCoast;

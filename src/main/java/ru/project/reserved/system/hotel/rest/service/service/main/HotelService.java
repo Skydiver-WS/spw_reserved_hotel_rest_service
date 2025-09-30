@@ -15,5 +15,5 @@ public interface HotelService {
 
     ResponseEntity<HotelResponse> updateHotel(HotelRequest hotelRequest);
 
-    ResponseEntity<HotelResponse> deleteService(Long hotelId);
+    ResponseEntity<HotelResponse> deleteService(HotelRequest hotelRequest);
 }

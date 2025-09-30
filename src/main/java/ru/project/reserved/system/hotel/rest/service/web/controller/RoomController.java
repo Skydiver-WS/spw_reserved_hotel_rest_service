@@ -23,26 +23,25 @@ public class RoomController {
         return roomService.findAllRooms();
     }
 
-    @PutMapping("/booking")
+    @PostMapping("/booking")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_CLIENT')")
     public ResponseEntity<RoomResponse> bookingRoom(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.bookingRoom(roomRequest);
     }
 
-    @PutMapping("/booking/update")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    @PostMapping("/booking/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL', 'ROLE_EMPLOYEE')")
     public ResponseEntity<RoomResponse> bookingUpdateBooking(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.bookingRoom(roomRequest);
     }
 
-    @PutMapping("/booking/remove")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
+    @DeleteMapping("/booking/remove")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL', 'ROLE_EMPLOYEE')")
     public ResponseEntity<RoomResponse> bookingRoomRemove(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.bookingRoom(roomRequest);
     }
 
     @PostMapping("/search")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_CLIENT')")
     public ResponseEntity<RoomResponse> findRooms(@RequestBody @Valid RoomRequest roomRequest) {
         return roomService.searchRoomByParameters(roomRequest);
     }
@@ -61,7 +60,7 @@ public class RoomController {
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL')")
-    public ResponseEntity<RoomResponse> deleteRoom(@RequestParam Long hotelId, @RequestParam Long roomId) {
-        return roomService.deleteRoom(hotelId, roomId);
+    public ResponseEntity<RoomResponse> deleteRoom(@RequestBody @Valid RoomRequest roomRequest) {
+        return roomService.deleteRoom(roomRequest);
     }
 }

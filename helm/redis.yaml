@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-cache
+  template:
+    metadata:
+      labels:
+        app: redis-cache
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.0.12
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: redis-cache-storage
+          persistentVolumeClaim:
+            claimName: redis-cache-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-cache-service
+spec:
+  selector:
+    app: redis-cache
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+      nodePort: 31033    # уникальный NodePort
+  type: NodePort
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-cache-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+
+
+## Создаем PostgreSQL
+#  kubectl apply -f postgres.yaml
+#
+#  # Создаем приложение
+#  kubectl apply -f deployment.yaml
+#
+#  # Проверяем статус
+#  kubectl get pods
+#  kubectl get services
+
+## Проверим, что pod удален
+#  kubectl get pods
+#  kubectl get deployments
+#  # или сокращенно
+#  kubectl get deploy
+#
+#  # Удаляем deployment
+#  kubectl delete deployment имя-деплоймента
+#
+#  # Пример:
+#  kubectl delete deployment hotel-app

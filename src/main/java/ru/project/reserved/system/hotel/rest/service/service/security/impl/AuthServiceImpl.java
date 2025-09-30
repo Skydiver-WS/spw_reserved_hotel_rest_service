@@ -41,6 +41,7 @@ public class AuthServiceImpl implements AuthService {
                 .token(jwt)
                 .build(), securityProperties.getExpiration());
         return UserResponse.builder()
+                .userId(user.getUserId())
                 .username(user.getUsername())
                 .token(jwt)
                 .build();

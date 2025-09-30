@@ -41,8 +41,8 @@ public class HotelController {
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<HotelResponse> deleteHotel(@RequestParam Long id){
-        return hotelService.deleteService(id);
+    public ResponseEntity<HotelResponse> deleteHotel(@RequestBody HotelRequest hotelRequest){
+        return hotelService.deleteService(hotelRequest);
     }
 
 

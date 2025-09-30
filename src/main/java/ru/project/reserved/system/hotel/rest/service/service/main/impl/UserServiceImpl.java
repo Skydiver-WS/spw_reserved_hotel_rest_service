@@ -25,6 +25,7 @@ import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Profile("!stub && prod")

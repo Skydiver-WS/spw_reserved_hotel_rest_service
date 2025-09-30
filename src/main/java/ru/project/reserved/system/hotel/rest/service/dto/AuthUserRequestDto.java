@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -14,11 +15,13 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 public class AuthUserRequestDto {
+    private UUID userId;
     private String user;
     private String username;
     private String password;
     private String inn;
     private String ogrn;
     private String address;
+    private String phone;
     private List<Role> role;
 }

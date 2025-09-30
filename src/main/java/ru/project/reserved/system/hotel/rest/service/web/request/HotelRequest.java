@@ -16,13 +16,14 @@ import java.util.List;
 public class HotelRequest {
 
     private Long id;
+    private String userId;
     private String name;
     private String description;
     private String address;
     private Double distance;
     private Double rating;
     private List<Photo> photos;
-    private CityRequest city;
+    private String city;
     private HotelSearchRequest hotelSearch;
 
     @Data

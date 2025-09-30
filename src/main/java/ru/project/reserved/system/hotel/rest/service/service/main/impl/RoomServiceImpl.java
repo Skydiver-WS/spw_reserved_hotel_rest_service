@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,49 +26,55 @@ public class RoomServiceImpl implements RoomService {
 
     private final RestService restService;
     private final DbServiceRestProperties prop;
-    private final ObjectMapper objectMapper;
 
     @Override
     public ResponseEntity<RoomResponse> findAllRooms() {
-        return restService.sendData(createData(null), RoomResponse.class);
+        return restService.sendData(createData(null, null, null), RoomResponse.class);
     }
 
     @Override
     public ResponseEntity<RoomResponse> searchRoomByParameters(RoomRequest roomRequest) {
-        return restService.sendData(createData(roomRequest), RoomResponse.class);
+        return restService.sendData(createData(roomRequest, null, null), RoomResponse.class);
     }
 
     @Override
     public ResponseEntity<RoomResponse> createRoom(RoomRequest roomRequest) {
 
-        return restService.sendData(createData(roomRequest), RoomResponse.class);
+        return restService.sendData(createData(roomRequest, null, null), RoomResponse.class);
     }
 
     @Override
     public ResponseEntity<RoomResponse> updateRoom(RoomRequest roomRequest) {
-        return restService.sendData(createData(roomRequest), RoomResponse.class);
+        return restService.sendData(createData(roomRequest, null, null), RoomResponse.class);
     }
 
     @Override
-    public ResponseEntity<RoomResponse> deleteRoom(Long hotelId, Long roomId) {
-       var roomRequest = RoomRequest.builder()
-                .id(roomId)
-                .hotelId(hotelId)
-                .build();
-        return restService.sendData(createData(roomRequest), RoomResponse.class);
+    public ResponseEntity<RoomResponse> deleteRoom(RoomRequest roomRequest) {
+        return restService.sendData(createData(roomRequest, null, null), RoomResponse.class);
     }
 
     @Override
     public ResponseEntity<RoomResponse> bookingRoom(RoomRequest roomRequest) {
-        return restService.sendData(createData(roomRequest), RoomResponse.class);
+        String uri = getHttpAttributes().getRequestURI();
+        if(uri.contains("update")){
+            uri = uri.replaceAll("/update", "");
+        } else if (uri.contains("remove")){
+            uri = uri.replaceAll("/remove", "");
+        }
+        return restService.sendData(createData(roomRequest, uri, HttpMethod.POST.name()), RoomResponse.class);
     }
 
 
-    private RestDataDto createData(Object request) {
+    private RestDataDto createData(Object request, String uri, String method) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+
+        String uri2 = Objects.isNull(uri) ? getHttpAttributes().getRequestURI() : uri;
+        String method2 = Objects.isNull(method) ? getHttpAttributes().getMethod() : method;
         return RestDataDto.builder()
-                //.headers() TODO://Сделать хэдер
-                .url(prop.getHostData() + getHttpAttributes().getRequestURI())
-                .method(HttpMethod.valueOf(getHttpAttributes().getMethod()))
+                .headers(headers)
+                .url(prop.getHostData() + uri2)
+                .method(HttpMethod.valueOf(method2))
                 .body(request)
                 .build();
     }

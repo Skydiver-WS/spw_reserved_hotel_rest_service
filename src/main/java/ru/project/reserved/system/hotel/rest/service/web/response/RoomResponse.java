@@ -31,4 +31,6 @@ public class RoomResponse {
     private List<Photo> photoList;
 
     private String errorMessage;
+
+    private List<RoomResponse> rooms;
 }
