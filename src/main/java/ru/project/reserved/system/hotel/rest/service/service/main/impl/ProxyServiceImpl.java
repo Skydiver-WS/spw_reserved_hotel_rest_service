@@ -1,0 +1,69 @@
+package ru.project.reserved.system.hotel.rest.service.service.main.impl;
+
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
+import ru.project.reserved.system.hotel.rest.service.properties.DbServiceRestProperties;
+import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
+import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
+
+import java.util.Objects;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class ProxyServiceImpl implements ProxyService {
+
+    private final RestService restService;
+    private final DbServiceRestProperties prop;
+
+    @Override
+    public <T> Object proxyOperation(Object rq, Class<T> clazz) {
+        RestDataDto restDataDto = createData(rq);
+        return restService.sendData(restDataDto, clazz);
+    }
+
+    private RestDataDto createData(Object request){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/json");
+        return RestDataDto.builder()
+                .headers(headers)
+                .url(prop.getHostData() + uri())
+                .method(httpMethod())
+                .body(request)
+                .build();
+    }
+
+    private HttpServletRequest getHttpAttributes(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attributes)){
+            log.error("ServletRequest is null");
+            throw new RuntimeException();
+        }
+        return attributes.getRequest();
+    }
+
+    private String uri(){
+        String uri = getHttpAttributes().getRequestURI();
+        if(uri.contains("booking/update")){
+            uri = uri.replaceAll("/update", "");
+        } else if (uri.contains("booking/remove")){
+            uri = uri.replaceAll("/remove", "");
+        }
+        return uri;
+    }
+
+    private HttpMethod httpMethod(){
+        String uri = getHttpAttributes().getRequestURI();
+        if (uri.contains("booking/update") || uri.contains("booking/remove")){
+            return HttpMethod.POST;
+        }
+        return HttpMethod.valueOf(getHttpAttributes().getMethod());
+    }
+}
