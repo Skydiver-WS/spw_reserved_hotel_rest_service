@@ -7,9 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.project.reserved.system.db.app.service.entity.Photo;
+import ru.project.reserved.system.hotel.rest.service.dto.Photo;
 
 import java.util.List;
+
 
 @Data
 @AllArgsConstructor
