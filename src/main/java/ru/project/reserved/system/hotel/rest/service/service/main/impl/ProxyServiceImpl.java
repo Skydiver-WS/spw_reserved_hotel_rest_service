@@ -26,7 +26,7 @@ public class ProxyServiceImpl implements ProxyService {
     @Override
     public <T> Object proxyOperation(Object rq, Class<T> clazz) {
         RestDataDto restDataDto = createData(rq);
-        return restService.sendData(restDataDto, clazz);
+        return restService.sendData(restDataDto, clazz).getBody();
     }
 
     private RestDataDto createData(Object request){
@@ -34,7 +34,7 @@ public class ProxyServiceImpl implements ProxyService {
         headers.add("Content-Type", "application/json");
         return RestDataDto.builder()
                 .headers(headers)
-                .url(prop.getHostData() + uri())
+                .url(host() + uri())
                 .method(httpMethod())
                 .body(request)
                 .build();
@@ -65,5 +65,13 @@ public class ProxyServiceImpl implements ProxyService {
             return HttpMethod.POST;
         }
         return HttpMethod.valueOf(getHttpAttributes().getMethod());
+    }
+
+    private String host(){
+        String uri = getHttpAttributes().getRequestURI();
+        if(uri.contains("/api/v1/user")){
+            return prop.getHostAuthDb();
+        }
+        return prop.getHostData();
     }
 }
