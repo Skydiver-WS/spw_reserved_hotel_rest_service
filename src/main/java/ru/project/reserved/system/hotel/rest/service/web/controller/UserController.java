@@ -41,7 +41,7 @@ public class UserController {
                 .maxAge(securityProperties.getExpiration())
                 .sameSite("Strict")
                 .build();
-        response.setToken(null);
+        //response.setToken(null);
         return ResponseEntity.ok()
                 .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(response);

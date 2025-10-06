@@ -1,5 +1,6 @@
 package ru.project.reserved.system.hotel.rest.service.web.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentRq {
 
     private String id;
@@ -25,7 +27,9 @@ public class CommentRq {
     private Long hotelId;
     @Min(1)
     @Max(10)
+    @NotNull
     private Double estimation;
+    @NotNull
     private String message;
     private List<Photo> photos;
 }
