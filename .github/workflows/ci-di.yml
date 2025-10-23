@@ -43,7 +43,7 @@ jobs:
 
       - name: Set multiply tags
         run: |
-          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }}
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }} ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:latest
 
       - name: Push Docker image to Docker Hub
         run: |
