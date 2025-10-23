@@ -9,14 +9,13 @@ import ru.project.reserved.system.hotel.rest.service.dto.Role;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse implements Serializable {
+public class UserRs implements Serializable {
 
     private String userId;
     private String username;
@@ -24,7 +23,7 @@ public class UserResponse implements Serializable {
     private String password;
     private String message;
     private List <Role> role;
-    private List<UserResponse> users;
+    private List<UserRs> users;
     private ErrorResponse error;
 
     @Builder

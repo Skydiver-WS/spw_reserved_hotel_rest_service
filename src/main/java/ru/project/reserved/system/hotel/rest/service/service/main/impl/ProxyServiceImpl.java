@@ -25,17 +25,23 @@ public class ProxyServiceImpl implements ProxyService {
 
     @Override
     public <T> Object proxyOperation(Object rq, Class<T> clazz) {
-        RestDataDto restDataDto = createData(rq);
+        RestDataDto restDataDto = createData(rq, null);
         return restService.sendData(restDataDto, clazz).getBody();
     }
 
-    private RestDataDto createData(Object request){
+    @Override
+    public <T> Object proxyOperation(Object rq, HttpMethod method, Class<T> clazz) {
+        RestDataDto restDataDto = createData(rq, method);
+        return restService.sendData(restDataDto, clazz).getBody();
+    }
+
+    private RestDataDto createData(Object request, HttpMethod method) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         return RestDataDto.builder()
                 .headers(headers)
                 .url(host() + uri())
-                .method(httpMethod())
+                .method(Objects.isNull(method) ? httpMethod() : method)
                 .body(request)
                 .build();
     }

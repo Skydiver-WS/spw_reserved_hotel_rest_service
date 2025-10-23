@@ -3,6 +3,7 @@ package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.project.reserved.system.hotel.rest.service.dto.AuthUserRequestDto;
@@ -10,11 +11,13 @@ import ru.project.reserved.system.hotel.rest.service.properties.DbServiceRestPro
 import ru.project.reserved.system.hotel.rest.service.properties.SecurityProperties;
 import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
 import ru.project.reserved.system.hotel.rest.service.service.main.UserService;
-import ru.project.reserved.system.hotel.rest.service.web.request.UserRequest;
-import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
+import ru.project.reserved.system.hotel.rest.service.web.request.UserRq;
+import ru.project.reserved.system.hotel.rest.service.web.response.UserRs;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Profile("!stub && prod")
@@ -27,41 +30,41 @@ public class UserServiceImpl implements UserService {
     private final SecurityProperties securityProp;
 
     @Override
-    public List<UserResponse> getAllUsers() {
+    public List<UserRs> getAllUsers() {
         log.info("Get all users");
-        UserResponse response = Optional.ofNullable((UserResponse) proxyService.proxyOperation(null, UserResponse.class))
-                .orElse(new UserResponse());
+        UserRs response = Optional.ofNullable((UserRs) proxyService.proxyOperation(null, UserRs.class))
+                .orElse(new UserRs());
         return response.getUsers();
     }
 
     @Override
-    public Optional<UserResponse> getUser(String username) {
+    public Optional<UserRs> getUser(String username) {
         log.info("Get user in auth db");
-        UserResponse user = (UserResponse) proxyService.proxyOperation(UserRequest.builder()
+        UserRs user = (UserRs) proxyService.proxyOperation(UserRq.builder()
                 .username(username)
-                .build(), UserResponse.class);
+                .build(), UserRs.class);
         return Optional.ofNullable(user);
     }
 
     @Override
-    public UserResponse createUser(AuthUserRequestDto authUserRequestDto) {
+    public UserRs createUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Create user");
         cryptoPassword(authUserRequestDto);
-        return (UserResponse) proxyService.proxyOperation(authUserRequestDto, UserResponse.class);
+        return (UserRs) proxyService.proxyOperation(authUserRequestDto, UserRs.class);
     }
 
     @Override
-    public UserResponse updateUser(AuthUserRequestDto authUserRequestDto) {
+    public UserRs updateUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Update user");
-        return (UserResponse) proxyService.proxyOperation(authUserRequestDto, UserResponse.class);
+        return (UserRs) proxyService.proxyOperation(authUserRequestDto, UserRs.class);
     }
 
     @Override
-    public UserResponse deleteUser(String username) {
+    public UserRs deleteUser(String username) {
         log.info("Delete user");
-        return (UserResponse) proxyService.proxyOperation(UserRequest.builder()
+        return (UserRs) proxyService.proxyOperation(UserRq.builder()
                 .username(username)
-                .build(), UserResponse.class);
+                .build(), UserRs.class);
     }
 
     private void cryptoPassword(AuthUserRequestDto authUserRequestDto) {

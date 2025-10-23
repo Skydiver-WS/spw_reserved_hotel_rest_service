@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>spw.reserved.hotel.rest.service</groupId>
-    <artifactId>spw_reserved_hotel_rest_service</artifactId>
+    <artifactId>hotel_rest_service</artifactId>
     <version>1.0.0</version>
     <name>rest-service</name>
     <description>This is rest service</description>
@@ -135,19 +135,19 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            <!--			<plugin>-->
-            <!--				<groupId>org.springframework.boot</groupId>-->
-            <!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--				<configuration>-->
-            <!--					<excludes>-->
-            <!--						<exclude>-->
-            <!--							<groupId>org.projectlombok</groupId>-->
-            <!--							<artifactId>lombok</artifactId>-->
-            <!--							<version>${lombok.version}</version>-->
-            <!--						</exclude>-->
-            <!--					</excludes>-->
-            <!--				</configuration>-->
-            <!--			</plugin>-->
+<!--            			<plugin>-->
+<!--            				<groupId>org.springframework.boot</groupId>-->
+<!--            				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--            				<configuration>-->
+<!--            					<excludes>-->
+<!--            						<exclude>-->
+<!--            							<groupId>org.projectlombok</groupId>-->
+<!--            							<artifactId>lombok</artifactId>-->
+<!--            							<version>${lombok.version}</version>-->
+<!--            						</exclude>-->
+<!--            					</excludes>-->
+<!--            				</configuration>-->
+<!--            			</plugin>-->
         </plugins>
     </build>
 

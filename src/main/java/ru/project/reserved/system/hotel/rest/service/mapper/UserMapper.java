@@ -4,7 +4,7 @@ package ru.project.reserved.system.hotel.rest.service.mapper;
 import org.mapstruct.Mapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import ru.project.reserved.system.hotel.rest.service.dto.AuthUserRequestDto;
-import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
+import ru.project.reserved.system.hotel.rest.service.web.response.UserRs;
 
 import java.util.List;
 
@@ -14,9 +14,9 @@ import java.util.List;
         })
 public interface UserMapper {
 
-    UserResponse userResponseFromAuthUserDto(AuthUserRequestDto authUserRequestDto);
+    UserRs userResponseFromAuthUserDto(AuthUserRequestDto authUserRequestDto);
 
-    AuthUserRequestDto authUserRequestFromUserResponse(UserResponse userResponse);
+    AuthUserRequestDto authUserRequestFromUserResponse(UserRs userRs);
 
-    List<UserResponse> listUserResponseFromAuthUserDtoList(List<AuthUserRequestDto> authUserRequestDtoList);
+    List<UserRs> listUserResponseFromAuthUserDtoList(List<AuthUserRequestDto> authUserRequestDtoList);
 }

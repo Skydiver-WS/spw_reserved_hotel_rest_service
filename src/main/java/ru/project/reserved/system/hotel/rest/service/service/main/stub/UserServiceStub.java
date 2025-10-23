@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.project.reserved.system.hotel.rest.service.dto.AuthUserRequestDto;
 import ru.project.reserved.system.hotel.rest.service.mapper.UserMapper;
 import ru.project.reserved.system.hotel.rest.service.service.main.UserService;
-import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
+import ru.project.reserved.system.hotel.rest.service.web.response.UserRs;
 
 import java.io.File;
 import java.util.List;
@@ -25,7 +25,7 @@ public class UserServiceStub implements UserService {
 
     @Override
     @SneakyThrows
-    public List<UserResponse> getAllUsers() {
+    public List<UserRs> getAllUsers() {
         log.info("Get all users stub");
         List<AuthUserRequestDto> listUsers = objectMapper.readValue(new File("src/main/resources/stub/users.json"),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, AuthUserRequestDto.class));
@@ -34,7 +34,7 @@ public class UserServiceStub implements UserService {
 
     @Override
     @SneakyThrows
-    public Optional<UserResponse> getUser(String username) {
+    public Optional<UserRs> getUser(String username) {
         log.info("Getting user stub {}", username);
         List<AuthUserRequestDto> listUsers = objectMapper.readValue(new File("src/main/resources/stub/users.json"),
                 objectMapper.getTypeFactory().constructCollectionType(List.class, AuthUserRequestDto.class));
@@ -46,25 +46,25 @@ public class UserServiceStub implements UserService {
     }
 
     @Override
-    public UserResponse createUser(AuthUserRequestDto authUserRequestDto) {
+    public UserRs createUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Creating user stub {}", authUserRequestDto.getUsername());
-        return UserResponse.builder()
+        return UserRs.builder()
                 .message("User created")
                 .build();
     }
 
     @Override
-    public UserResponse updateUser(AuthUserRequestDto authUserRequestDto) {
+    public UserRs updateUser(AuthUserRequestDto authUserRequestDto) {
         log.info("Updating user stub {}", authUserRequestDto.getUsername());
-        return UserResponse.builder()
+        return UserRs.builder()
                 .message("User updated")
                 .build();
     }
 
     @Override
-    public UserResponse deleteUser(String username) {
+    public UserRs deleteUser(String username) {
         log.info("Deleting user stub {}", username);
-        return UserResponse.builder()
+        return UserRs.builder()
                 .message("User delete")
                 .build();
     }

@@ -1,9 +1,9 @@
 package ru.project.reserved.system.hotel.rest.service.service.security;
 
-import ru.project.reserved.system.hotel.rest.service.web.request.UserRequest;
-import ru.project.reserved.system.hotel.rest.service.web.response.UserResponse;
+import ru.project.reserved.system.hotel.rest.service.web.request.UserRq;
+import ru.project.reserved.system.hotel.rest.service.web.response.UserRs;
 
 public interface AuthService {
 
-    UserResponse authenticate(UserRequest userRequest);
+    UserRs authenticate(UserRq userRq);
 }

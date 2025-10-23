@@ -13,10 +13,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelRequest {
+public class HotelRq {
 
     private Long id;
-    private String userId;
     private String name;
     private String description;
     private String address;
@@ -25,18 +24,16 @@ public class HotelRequest {
     private List<Photo> photos;
     private String city;
     private HotelSearchRequest hotelSearch;
+    private List<UserRq> usersRq;
 
     @Data
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
     public static class HotelSearchRequest {
-        @NotNull
         private String city;
         private String hotelName;
-        @NotNull
         private Date startReserved;
-        @NotNull
         private Date endReserved;
         private SortType sortCoast;
         private Long coastMin;
@@ -45,5 +42,14 @@ public class HotelRequest {
         private Double rating;
         private SortType sortDistance;
         private Double distance;
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserRq{
+        @NotNull
+        private String userId;
     }
 }
