@@ -52,6 +52,6 @@ jobs:
       - name: Set tags in gitHub
         run: |
           git config --local user.email "${{ secrets.EMAIL }}"
-         git config --local user.name "${{ secrets.USERNAME }}"
+          git config --local user.name "${{ secrets.USERNAME }}"
           git tag ${{ env.PROJECT_VERSION }}
           git push origin ${{ env.PROJECT_VERSION }}
