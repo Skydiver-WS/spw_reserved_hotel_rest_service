@@ -39,12 +39,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t skydiverkhv/hotel_rest_service:v${{ env.PROJECT_VERSION }} .
+          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }} .
 
       - name: Set multiply tags
         run: |
-          docker tag skydiverkhv/hotel_rest_service:${{ env.PROJECT_VERSION }} skydiverkhv/hotel_rest_service:latest
+          docker tag ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }}
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push skydiverkhv/hotel_rest_service:v${{ env.PROJECT_VERSION }}
+          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }}
