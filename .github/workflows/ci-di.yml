@@ -48,3 +48,8 @@ jobs:
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }}
+
+      - name: Set tags in gitHub
+        run: |
+          git tag ${{ env.PROJECT_VERSION }}
+          git push origin ${{ env.PROJECT_VERSION }}
