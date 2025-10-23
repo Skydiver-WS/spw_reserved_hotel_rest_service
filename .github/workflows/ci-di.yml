@@ -55,6 +55,13 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/hotel_rest_service:${{ env.PROJECT_VERSION }}
 
+      - name: Debug token access
+        run: |
+          echo "Checking token access..."
+         curl -H "Authorization: token ${{ secrets.ACCES_TOKEN }}" \
+         -H "Accept: application/vnd.github.v3+json" \
+         https://api.github.com/${{ secrets.USERNAME }}
+
       - name: Set tags in gitHub
         run: |
           git config --local user.email "${{ secrets.EMAIL }}"
