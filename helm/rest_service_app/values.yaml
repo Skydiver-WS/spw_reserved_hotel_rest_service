@@ -1,0 +1,10 @@
+# Default values for rest_service_app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+global:
+  namespace: hotel-rest-app
+replicaCount: 1
+
+app:
+  name: hotel-rest-app
+  image: docker pull skydiverkhv/hotel_rest_service:1.0.0

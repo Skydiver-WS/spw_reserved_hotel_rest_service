@@ -12,7 +12,7 @@ import ru.project.reserved.system.hotel.rest.service.web.response.HotelRs;
 @RequestMapping("/api/v1/hotel")
 @RequiredArgsConstructor
 public class HotelController {
-
+    
     private final ProxyService proxyService;
 
     @GetMapping
