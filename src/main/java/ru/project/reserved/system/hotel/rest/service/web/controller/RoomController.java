@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ru.project.reserved.system.hotel.rest.service.properties.DbServiceRestProperties;
 import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
 import ru.project.reserved.system.hotel.rest.service.web.request.RoomRq;
+import ru.project.reserved.system.hotel.rest.service.web.response.BookingRs;
 import ru.project.reserved.system.hotel.rest.service.web.response.RoomRs;
 
 @RestController
@@ -24,20 +24,20 @@ public class RoomController {
 
     @PostMapping("/booking")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_CLIENT')")
-    public ResponseEntity<RoomRs> bookingRoom(@RequestBody @Valid RoomRq roomRq) {
-        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(roomRq, RoomRs.class));
+    public ResponseEntity<BookingRs> bookingRoom(@RequestBody @Valid RoomRq roomRq) {
+        return ResponseEntity.ok((BookingRs) proxyService.proxyOperation(roomRq, BookingRs.class));
     }
 
     @PostMapping("/booking/update")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<RoomRs> bookingUpdateBooking(@RequestBody @Valid RoomRq roomRq) {
-        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(roomRq, RoomRs.class));
+    public ResponseEntity<BookingRs> bookingUpdateBooking(@RequestBody @Valid RoomRq roomRq) {
+        return ResponseEntity.ok((BookingRs) proxyService.proxyOperation(roomRq, BookingRs.class));
     }
 
     @DeleteMapping("/booking/remove")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL', 'ROLE_EMPLOYEE')")
-    public ResponseEntity<RoomRs> bookingRoomRemove(@RequestBody @Valid RoomRq roomRq) {
-        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(roomRq, RoomRs.class));
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER_HOTEL', 'ROLE_EMPLOYEE', 'ROLE_CLIENT')")
+    public ResponseEntity<BookingRs> bookingRoomRemove(@RequestBody @Valid RoomRq roomRq) {
+        return ResponseEntity.ok((BookingRs) proxyService.proxyOperation(roomRq, BookingRs.class));
     }
 
     @PostMapping("/search")

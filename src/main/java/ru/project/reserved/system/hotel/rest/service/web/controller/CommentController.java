@@ -24,14 +24,14 @@ public class CommentController {
     }
 
     @PutMapping
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CLIENT')")
     public ResponseEntity<CommentRs> updateComment(@RequestBody @Validated CommentRq commentRq){
         return ResponseEntity.ok((CommentRs) proxyService.proxyOperation(commentRq, CommentRs.class));
     }
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
-    public ResponseEntity<CommentRs> deleteComment(@RequestBody @Validated CommentRq commentRq){
+    public ResponseEntity<CommentRs> deleteComment(@RequestBody CommentRq commentRq){
         return ResponseEntity.ok((CommentRs) proxyService.proxyOperation(commentRq, CommentRs.class));
     }
 

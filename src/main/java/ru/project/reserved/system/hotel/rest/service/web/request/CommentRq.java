@@ -20,7 +20,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommentRq {
 
-    private String id;
+    private String commentId;
     @NotNull
     private String userId;
     @NotNull
