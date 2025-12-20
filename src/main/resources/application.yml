@@ -1,6 +1,9 @@
 server:
   port: 8082
 spring:
+  application:
+    name: reserved_hotel_rest_service
+  # Настройки Actuator
   data:
     redis:
       host: 127.0.0.1
@@ -16,6 +19,25 @@ db:
      host: http://localhost:8081/booking-app
     auth:
       host: http://localhost:8084/auth-db-app
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, metrics, prometheus
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    prometheus:
+      access: read_only
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+    tags:
+      application: ${spring.application.name}
+  server:
+    port: ${server.port}  # Actuator порт (можно оставить тот же)
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855

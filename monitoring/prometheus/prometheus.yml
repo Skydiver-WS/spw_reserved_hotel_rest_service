@@ -1,0 +1,24 @@
+# Глобальные настройки
+global:
+  scrape_interval: 15s  # как часто собирать метрики
+  evaluation_interval: 15s  # как часто проверять правила
+
+# Правила сбора метрик
+scrape_configs:
+  # Задача для Spring Boot приложения
+  - job_name: 'rest-app'
+    metrics_path: '/actuator/prometheus'  # откуда брать метрики
+    scrape_interval: 5s  # чаще для Spring Boot
+    static_configs:
+      - targets: ['host.docker.internal:8082']  # АДРЕС ВАЖНЫЙ!
+        labels:
+          application: 'reserved_hotel_rest_service'
+          environment: 'development'
+  - job_name: 'db-app'
+    metrics_path: '/booking-app/actuator/prometheus'  # откуда брать метрики
+    scrape_interval: 5s  # чаще для Spring Boot
+    static_configs:
+      - targets: [ 'host.docker.internal:8081' ]  # АДРЕС ВАЖНЫЙ!
+        labels:
+          application: 'reserved_hotel_db_service'
+          environment: 'development'

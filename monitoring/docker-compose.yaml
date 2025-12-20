@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Prometheus - сборщик метрик
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"  # Доступ с компьютера: localhost:9090
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml  # конфиг
+      - prometheus_data:/prometheus  # данные
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    restart: unless-stopped
+    networks:
+      - monitoring-network
+
+  # Grafana - визуализация
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"  # Доступ с компьютера: localhost:3000
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin  # пароль для входа
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel  # дополнительные плагины
+    volumes:
+      - grafana_data:/var/lib/grafana  # данные графаны
+      - ./grafana/provisioning:/etc/grafana/provisioning  # автоматическая настройка
+    restart: unless-stopped
+    networks:
+      - monitoring-network
+    depends_on:
+      - prometheus
+
+# Сети и тома (тома - это как диски для Docker)
+volumes:
+  prometheus_data:
+  grafana_data:
+
+# Сеть для связи контейнеров
+networks:
+  monitoring-network:
+    driver: bridge

@@ -1,0 +1,10 @@
+apiVersion: 1
+
+# Список источников данных
+datasources:
+  - name: 'Prometheus'
+    type: 'prometheus'
+    access: 'proxy'
+    url: 'http://prometheus:9090'  # обращаемся к контейнеру prometheus
+    isDefault: true
+    editable: true
