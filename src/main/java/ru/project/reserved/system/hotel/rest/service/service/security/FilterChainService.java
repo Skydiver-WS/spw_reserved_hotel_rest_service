@@ -7,15 +7,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.project.reserved.system.hotel.rest.service.dto.Redis;
-import ru.project.reserved.system.hotel.rest.service.exception.SecurityException;
+import ru.project.reserved.system.hotel.rest.service.dto.type.MetricType;
+import ru.project.reserved.system.hotel.rest.service.exception.RestException;
+import ru.project.reserved.system.hotel.rest.service.service.main.MetricService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -30,6 +35,7 @@ public class FilterChainService extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
     private final UserDetailsFromCacheService userDetailsFromCacheService;
     private final RedisTemplate<UUID, Redis> redisTemplate;
+    private final MetricService metricService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -60,9 +66,26 @@ public class FilterChainService extends OncePerRequestFilter {
             }
             if (jwtService.isValidToken(token)) {
                 authenticate(userDetails, request);
+
             }
         }
         filterChain.doFilter(request, response);
+        if (response.getStatus() == HttpStatus.OK.value()){
+            metricService.sendMetricEnd(MetricType.SIGN_IN_USER, null, "User signIn");
+        } else if (response.getStatus() == HttpStatus.FORBIDDEN.value()){
+            metricService.sendExceptionMetric(MetricType.ACCESS_DENIED,
+                    new RestException(HttpStatus.FORBIDDEN, "Access decided"),
+                    "User forbidden");
+        } else if (response.getStatus() == HttpStatus.UNAUTHORIZED.value()){
+            metricService.sendExceptionMetric(MetricType.NO_AUTH_USER,
+                    new RestException(HttpStatus.UNAUTHORIZED, "Unauthorized"),
+                    "User not authenticated");
+        } else {
+            metricService.sendExceptionMetric(MetricType.ERROR,
+                    new RestException(HttpStatus.SERVICE_UNAVAILABLE, "Service unavailable"),
+                    "System error");
+        }
+
     }
 
     private void authenticate(UserDetails userDetails, HttpServletRequest request) {
@@ -72,6 +95,7 @@ public class FilterChainService extends OncePerRequestFilter {
                 userDetails.getAuthorities());
         authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authToken);
+
     }
 
 }

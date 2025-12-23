@@ -3,7 +3,6 @@ package ru.project.reserved.system.hotel.rest.service.configuration;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -56,8 +55,8 @@ public class SecurityConfiguration {
         log.info("Start bean auth manager");
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
         authenticationManagerBuilder.userDetailsService(detailsService);
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(passwordEncoder);
-        authenticationProvider.setUserDetailsService(detailsService);
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(detailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder);
         authenticationManagerBuilder.authenticationProvider(authenticationProvider);
         log.info("{} is successful", AuthenticationManagerBuilder.class.getName());
         return authenticationManagerBuilder.build();

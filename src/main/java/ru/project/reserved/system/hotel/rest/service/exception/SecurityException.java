@@ -1,6 +1,8 @@
 package ru.project.reserved.system.hotel.rest.service.exception;
 
-public class SecurityException extends RuntimeException {
+import io.jsonwebtoken.JwtException;
+
+public class SecurityException extends JwtException {
     public SecurityException(String message) {
         super(message);
     }

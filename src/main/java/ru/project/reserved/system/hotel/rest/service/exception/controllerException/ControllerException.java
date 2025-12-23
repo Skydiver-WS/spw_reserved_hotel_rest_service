@@ -1,6 +1,7 @@
 package ru.project.reserved.system.hotel.rest.service.exception.controllerException;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -21,7 +22,7 @@ public class ControllerException {
                 .build());
     }
 
-    @ExceptionHandler({SecurityException.class})
+    @ExceptionHandler({SecurityException.class, SignatureException.class})
     public ResponseEntity<ExceptionResponse> exceptionResponse(SecurityException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ExceptionResponse.builder()
@@ -33,16 +34,6 @@ public class ControllerException {
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public ResponseEntity<ExceptionResponse> exceptionResponse(HttpMessageNotReadableException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ExceptionResponse.builder()
-                        .errorMessage(e.getMessage())
-                        .build());
-
-    }
-
-    @ExceptionHandler({SignatureException.class, MalformedJwtException.class, ExpiredJwtException.class,
-            UnsupportedJwtException.class, IllegalArgumentException.class})
-    public ResponseEntity<ExceptionResponse> exceptionResponse(Exception e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ExceptionResponse.builder()
                         .errorMessage(e.getMessage())
                         .build());

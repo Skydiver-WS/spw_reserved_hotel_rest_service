@@ -10,7 +10,7 @@
     </parent>
     <groupId>spw.reserved.hotel.rest.service</groupId>
     <artifactId>hotel_rest_service</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <name>rest-service</name>
     <description>This is rest service</description>
     <properties>
