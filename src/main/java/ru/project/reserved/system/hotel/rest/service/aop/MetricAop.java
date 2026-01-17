@@ -26,7 +26,7 @@ public class MetricAop {
     @Before("@annotation(metric)")
     @SneakyThrows
     public void before(JoinPoint joinPoint, Metric metric) {
-        log.info("Request metrics");
+        log.debug("Request metrics");
         Object o = joinPoint.getArgs();
         meterService.sendMetricStart(metric.type(), o, metric.description());
     }
@@ -34,13 +34,13 @@ public class MetricAop {
     @AfterReturning(value = "@annotation(metric)", returning = "returning")
     @SneakyThrows
     public void after(JoinPoint joinPoint, Metric metric, Object returning) {
-        log.info("Response metrics aop");
+        log.debug("Response metrics aop");
         meterService.sendMetricEnd(metric.type(), returning, metric.description());
     }
 
     @AfterThrowing(value = "@annotation(metric)", throwing = "exception")
     public void throwApp(JoinPoint joinPoint, Metric metric, Exception exception) {
-        log.info("Exception metrics aop ", exception);
+        log.debug("Exception metrics aop ", exception);
         meterService.sendExceptionMetric(metric.type(), exception, metric.description());
     }
 

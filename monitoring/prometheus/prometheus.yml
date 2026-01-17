@@ -7,10 +7,13 @@ global:
 scrape_configs:
   # Задача для Spring Boot приложения
   - job_name: 'rest-app'
+    scheme: 'https'
     metrics_path: '/actuator/prometheus'  # откуда брать метрики
     scrape_interval: 5s  # чаще для Spring Boot
+    tls_config:
+      ca_file: '/etc/prometheus/certs/keystore.pem'
     static_configs:
-      - targets: ['host.docker.internal:8082']  # АДРЕС ВАЖНЫЙ!
+      - targets: ['host.docker.internal:8443']  # АДРЕС ВАЖНЫЙ!
         labels:
           application: 'reserved_hotel_rest_service'
           environment: 'development'

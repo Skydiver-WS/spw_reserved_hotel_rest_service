@@ -1,6 +1,7 @@
 package ru.project.reserved.system.hotel.rest.service.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,8 @@ public class HotelController {
 
     @GetMapping
     @Metric(type = MetricType.ALL_HOTELS)
-    public ResponseEntity<HotelRs> findAllHotels(){
-        return ResponseEntity.ok((HotelRs) proxyService.proxyOperation(null, HotelRs.class));
+    public ResponseEntity<HotelRs> findAllHotels(Pageable pageable){
+        return ResponseEntity.ok((HotelRs) proxyService.proxyOperation(pageable, HotelRs.class));
     }
 
     @PostMapping("/search")

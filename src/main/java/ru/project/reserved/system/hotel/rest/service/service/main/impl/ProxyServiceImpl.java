@@ -3,6 +3,7 @@ package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,11 @@ public class ProxyServiceImpl implements ProxyService {
     private RestDataDto createData(Object request, HttpMethod method) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
+        String param = request instanceof Pageable p ?
+                String.format("?page=%d&size=%d", p.getPageNumber(), p.getPageSize()) : "";
         return RestDataDto.builder()
                 .headers(headers)
-                .url(host() + uri())
+                .url(host() + uri() + param)
                 .method(Objects.isNull(method) ? httpMethod() : method)
                 .body(request)
                 .build();

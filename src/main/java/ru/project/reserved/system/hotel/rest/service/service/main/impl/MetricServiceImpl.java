@@ -25,7 +25,7 @@ public class MetricServiceImpl implements MetricService {
     @Override
     @SneakyThrows
     public void sendMetricStart(MetricType metricType, Object inputObject, String description) {
-        log.info("Send metric start");
+        log.debug("Send metric start");
         Counter counter = Counter.builder(metricType.getType() + "_start")
                 .description(description)
                 .tag("body", new ObjectMapper().writeValueAsString(inputObject))
@@ -37,7 +37,7 @@ public class MetricServiceImpl implements MetricService {
     @Override
     @SneakyThrows
     public void sendMetricEnd(MetricType metricType, Object returning, String description) {
-        log.info("Send metrics end");
+        log.debug("Send metrics end");
         if (Objects.nonNull(returning) && returning instanceof ResponseEntity<?> r){
             Counter counter = Counter.builder(metricType.getType() + "_end")
                     .description(description)
@@ -50,7 +50,7 @@ public class MetricServiceImpl implements MetricService {
 
     @Override
     public void sendExceptionMetric(MetricType metricType, Exception exception, String description) {
-        log.info("Exception metrics");
+        log.debug("Exception metrics");
         String code = "500";
         if (exception instanceof HttpClientErrorException e){
             code = String.valueOf(((HttpClientErrorException) e).getStatusCode().value());

@@ -3,6 +3,13 @@ package ru.project.reserved.system.hotel.rest.service.configuration;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -33,6 +40,9 @@ public class SecurityConfiguration {
 
     private final FilterChainService jwtFilterService;
     private final SecurityProperties securityProperties;
+
+    @Value("${server.port}")
+    private int port;
 
     @Bean
     @Profile("!stub && prod")
@@ -74,4 +84,30 @@ public class SecurityConfiguration {
         log.info("Finish conf {}", SecurityFilterChain.class.getName());
         return httpSecurity.build();
     }
+
+//    @Bean
+//    public ServletWebServerFactory serverFactory(){
+//        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory(){
+//            @Override
+//            protected void postProcessContext(Context context) {
+//                SecurityConstraint securityConstraint = new SecurityConstraint();
+//                securityConstraint.setUserConstraint("CONFIDENTIAL");
+//                SecurityCollection collection = new SecurityCollection();
+//                collection.addPattern("/*");
+//                securityConstraint.addCollection(collection);
+//                context.addConstraint(securityConstraint);
+//            }
+//        };
+//        tomcat.addAdditionalTomcatConnectors(redirectConnector());
+//        return tomcat;
+//    }
+//
+//    private Connector redirectConnector(){
+//        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+//        connector.setScheme("http");
+//        connector.setPort(port);
+//        connector.setSecure(false);
+//        connector.setRedirectPort(8443);
+//        return connector;
+//    }
 }

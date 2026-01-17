@@ -1,5 +1,11 @@
 server:
-  port: 8082
+  port: 8443
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:cert/keystore.p12
+    key-store-password: 123456
+    key-alias: rest-app-hotel
+    enabled: true
 spring:
   application:
     name: reserved_hotel_rest_service
@@ -41,5 +47,9 @@ management:
 token:
   signing:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
-    expiration: 1m
+    expiration: 600m
     levelCrypto: 10
+
+#    Генерация серта
+#
+#    keytool -genkeypair -alias rest-app-hotel -keyalg RSA -keysize 2048 -validity 365 -keystore keystore.p12 -storepass 123456 -keypass 123456 -dname "CN=localhost, OU=Development, O=Rest-app-hotel, L=Moscow, ST=Moscow, C=RU" -ext "SAN=dns:localhost,dns:host.docker.internal,ip:127.0.0.1"
