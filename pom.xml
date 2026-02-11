@@ -10,7 +10,7 @@
     </parent>
     <groupId>spw.reserved.hotel.rest.service</groupId>
     <artifactId>hotel_rest_service</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <name>rest-service</name>
     <description>This is rest service</description>
     <properties>
@@ -147,19 +147,19 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-<!--            			<plugin>-->
-<!--            				<groupId>org.springframework.boot</groupId>-->
-<!--            				<artifactId>spring-boot-maven-plugin</artifactId>-->
-<!--            				<configuration>-->
-<!--            					<excludes>-->
-<!--            						<exclude>-->
-<!--            							<groupId>org.projectlombok</groupId>-->
-<!--            							<artifactId>lombok</artifactId>-->
-<!--            							<version>${lombok.version}</version>-->
-<!--            						</exclude>-->
-<!--            					</excludes>-->
-<!--            				</configuration>-->
-<!--            			</plugin>-->
+            			<plugin>
+            				<groupId>org.springframework.boot</groupId>
+            				<artifactId>spring-boot-maven-plugin</artifactId>
+            				<configuration>
+            					<excludes>
+            						<exclude>
+            							<groupId>org.projectlombok</groupId>
+            							<artifactId>lombok</artifactId>
+            							<version>${lombok.version}</version>
+            						</exclude>
+            					</excludes>
+            				</configuration>
+            			</plugin>
         </plugins>
     </build>
 
