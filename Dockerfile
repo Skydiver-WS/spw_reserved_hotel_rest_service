@@ -19,6 +19,6 @@ WORKDIR /app
 # Копируем собранный JAR из стадии builder
 COPY --from=builder /app/target/hotel_rest_service-*.jar app.jar
 
-EXPOSE 8082
+EXPOSE 8443
 ENV SPRING_PROFILES_ACTIVE=vitrual-thread,prod
 ENTRYPOINT ["java", "-jar", "app.jar"]
