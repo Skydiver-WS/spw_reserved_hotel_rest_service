@@ -8,7 +8,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Собираем приложение с Maven профилями
-RUN mvn clean package -Pvitrual-thread -DskipTests
+RUN mvn clean package -Pvitrual-thread,prod -DskipTests
 
 # Финальный образ
 FROM amazoncorretto:23
@@ -20,5 +20,5 @@ WORKDIR /app
 COPY --from=builder /app/target/hotel_rest_service-*.jar app.jar
 
 EXPOSE 8082
-ENV SPRING_PROFILES_ACTIVE=vitrual-thread
+ENV SPRING_PROFILES_ACTIVE=vitrual-thread,prod
 ENTRYPOINT ["java", "-jar", "app.jar"]
