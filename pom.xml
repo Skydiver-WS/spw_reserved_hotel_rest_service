@@ -150,8 +150,8 @@
             			<plugin>
             				<groupId>org.springframework.boot</groupId>
             				<artifactId>spring-boot-maven-plugin</artifactId>
-                            <version>3.5.5</version>
             				<configuration>
+                                <mainClass>ru.project.reserved.system.hotel.rest.service.RestServiceApplication</mainClass>
             					<excludes>
             						<exclude>
             							<groupId>org.projectlombok</groupId>
