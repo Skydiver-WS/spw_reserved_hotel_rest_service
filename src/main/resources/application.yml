@@ -12,7 +12,7 @@ spring:
   # Настройки Actuator
   data:
     redis:
-      host: 127.0.0.1
+      host: /host.docker.internal
       port: 31033
 #      port: 6379
       timeLiveMessages: 10m
