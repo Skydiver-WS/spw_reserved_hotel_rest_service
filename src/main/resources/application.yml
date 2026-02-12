@@ -22,11 +22,9 @@ spring:
 db:
   service:
     data:
-#     host: http://localhost:8081/booking-app
-     host: http://db-service:8081/booking-app
+     host: http://host.docker.internal:8081/booking-app
     auth:
-#      host: http://localhost:8084/auth-db-app
-      host: http://db-auth-service:8084/auth-db-app
+      host: http://host.docker.internal:8084/auth-db-app
 management:
   endpoints:
     web:
