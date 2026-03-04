@@ -1,6 +1,7 @@
 package ru.project.reserved.system.hotel.rest.service.configuration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import java.util.UUID;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class RestConfiguration {
 
     private final GigaChatProp gigaChatProp;
@@ -49,7 +51,6 @@ public class RestConfiguration {
     public RestClient.Builder restClientBuilderToken() throws Exception {
         return RestClient.builder()
                 .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
-                .defaultHeaders(h -> h.addAll(createGigaChatHeaders()))
                 .requestInterceptor(((request, body, execution) -> {
                     System.out.println("========== OUTGOING REQUEST ==========");
                     System.out.println("URI: " + request.getURI());
@@ -62,10 +63,10 @@ public class RestConfiguration {
     }
 
     @Bean("promt-builder")
-    public RestClient.Builder restClientBuilderPromt() throws Exception {
+    public RestClient.Builder restClientBuilderPromt(@Qualifier("promt-headers") HttpHeaders headers) throws Exception {
         return RestClient.builder()
                 .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
-                .defaultHeaders(h -> h.addAll(createGigaChatHeadersPromt()))
+                .defaultHeaders(h -> h.addAll(headers))
                 .requestInterceptor(((request, body, execution) -> {
                     System.out.println("========== OUTGOING REQUEST ==========");
                     System.out.println("URI: " + request.getURI());
@@ -96,20 +97,13 @@ public class RestConfiguration {
                 .build();
     }
 
-    private HttpHeaders createGigaChatHeaders() {
+    @Bean("get-token-headers")
+    public HttpHeaders createGigaChatHeaders() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
         headers.add("RqUID", UUID.randomUUID().toString());
         headers.add(HttpHeaders.AUTHORIZATION, String.format("Basic %s", gigaChatProp.getAuthToken()));
-        return headers;
-    }
-
-    private HttpHeaders createGigaChatHeadersPromt() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-        headers.setBearerAuth(token);
         return headers;
     }
 }

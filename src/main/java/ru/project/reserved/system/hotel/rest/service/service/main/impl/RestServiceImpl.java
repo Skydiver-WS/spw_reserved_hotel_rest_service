@@ -2,12 +2,14 @@ package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
+import ru.project.reserved.system.hotel.rest.service.dto.type.BeanType;
 import ru.project.reserved.system.hotel.rest.service.exception.RestException;
 import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
 
@@ -20,11 +22,12 @@ import java.util.Objects;
 @Slf4j
 public class RestServiceImpl implements RestService {
 
-    private final RestClient restClient;
+    private final ApplicationContext context;
 
     @Override
-    public <T> ResponseEntity<T> sendData(RestDataDto restDataDto, Class<T> type) {
+    public <T> ResponseEntity<T> sendData(RestDataDto restDataDto, BeanType beanType, Class<T> type) {
         log.info("Send data to {}", restDataDto.getUrl());
+        RestClient restClient = context.getBean(beanType.getValue(), RestClient.class);
         try {
             return restClient.method(restDataDto.getMethod())
                     .uri(restDataDto.getUrl())

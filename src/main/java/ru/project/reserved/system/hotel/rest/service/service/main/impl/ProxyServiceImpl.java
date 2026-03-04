@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
+import ru.project.reserved.system.hotel.rest.service.dto.type.BeanType;
 import ru.project.reserved.system.hotel.rest.service.properties.DbServiceRestProperties;
 import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
 import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
@@ -27,13 +28,13 @@ public class ProxyServiceImpl implements ProxyService {
     @Override
     public <T> Object proxyOperation(Object rq, Class<T> clazz) {
         RestDataDto restDataDto = createData(rq, null);
-        return restService.sendData(restDataDto, clazz).getBody();
+        return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
     }
 
     @Override
     public <T> Object proxyOperation(Object rq, HttpMethod method, Class<T> clazz) {
         RestDataDto restDataDto = createData(rq, method);
-        return restService.sendData(restDataDto, clazz).getBody();
+        return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
     }
 
     private RestDataDto createData(Object request, HttpMethod method) {
