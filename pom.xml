@@ -12,9 +12,8 @@
     <artifactId>hotel_rest_service</artifactId>
     <version>1.0.12</version>
     <name>rest-service</name>
-    <description>This is rest service</description>
-    <properties>
-        <java.version>23</java.version>
+    <description>This is rest service</description>    <properties>
+        <java.version>25</java.version>
         <lombok.version>1.18.38</lombok.version>
         <jwt.version>0.12.7</jwt.version>
     </properties>

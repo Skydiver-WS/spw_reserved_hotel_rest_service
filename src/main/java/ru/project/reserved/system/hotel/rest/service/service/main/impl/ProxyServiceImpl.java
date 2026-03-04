@@ -49,15 +49,6 @@ public class ProxyServiceImpl implements ProxyService {
                 .build();
     }
 
-    private HttpServletRequest getHttpAttributes(){
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if (Objects.isNull(attributes)){
-            log.error("ServletRequest is null");
-            throw new RuntimeException();
-        }
-        return attributes.getRequest();
-    }
-
     private String uri(){
         String uri = getHttpAttributes().getRequestURI();
         if(uri.contains("booking/update")){
@@ -66,6 +57,15 @@ public class ProxyServiceImpl implements ProxyService {
             uri = uri.replaceAll("/remove", "");
         }
         return uri;
+    }
+
+    private HttpServletRequest getHttpAttributes(){
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (Objects.isNull(attributes)){
+            log.error("ServletRequest is null");
+            throw new RuntimeException();
+        }
+        return attributes.getRequest();
     }
 
     private HttpMethod httpMethod(){

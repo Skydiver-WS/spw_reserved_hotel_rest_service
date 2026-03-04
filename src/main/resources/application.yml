@@ -18,6 +18,9 @@ spring:
       timeLiveMessages: 10m
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:local}
+  ai:
+    openai:
+      api-key: "stub-key"
 
 db:
   service:
@@ -25,6 +28,7 @@ db:
      host: http://host.docker.internal:8081/booking-app
     auth:
       host: http://host.docker.internal:8084/auth-db-app
+
 management:
   endpoints:
     web:
@@ -49,6 +53,14 @@ token:
     key: 53A73E5F1C4E0A2D3B5F2D784E6A1B423D6F247D1F6E5C3A596D635A75327855
     expiration: 600m
     levelCrypto: 10
+giga-chat:
+  property:
+    model: "GigaChat"
+    host: 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth'
+    auth-token: MDE5YzUyOTMtZTI0OC03NmJmLWJiMzktNzk3MjE5OWQ0Nzk4OjNmZjBmYTdhLWQ5M2YtNDk0NC05NmVmLWM0OTQxYTY3ZDdmZA==
+    get-models-url: 'https://gigachat.devices.sberbank.ru/api/v1/models'
+    create-promt: 'https://gigachat.devices.sberbank.ru/api'
+    url-promt: '/v1/chat/completions'
 
 #    Генерация серта
 #
