@@ -12,6 +12,7 @@ import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.retry.support.RetryTemplate;
@@ -34,12 +35,14 @@ public class AIConfiguration {
     private static String token;
 
     @Bean
+    @Primary
     public OpenAiChatModel openAiChatModel(OpenAiApi openAiApi, OpenAiChatOptions defaultOptions, ToolCallingManager toolCallingManager, RetryTemplate retryTemplate, ObservationRegistry observationRegistry) {
         log.info("OpenAiChatModel");
         return new OpenAiChatModel(openAiApi, defaultOptions, toolCallingManager, retryTemplate, observationRegistry);
     }
 
     @Bean
+    @Primary
     public OpenAiChatOptions openAiChatOptions() {
         return OpenAiChatOptions.builder()
                 .model(gigaChatProp.getModel())
@@ -48,24 +51,29 @@ public class AIConfiguration {
     }
 
     @Bean
+    @Primary
     public OpenAiApi openAiApi(ApiKey apiKey, @Qualifier("promt-headers") MultiValueMap<String, String> headers,  @Qualifier("promt-builder") RestClient.Builder restClientBuilder, WebClient.Builder clientBuilder, ResponseErrorHandler responseErrorHandler) {
         log.info("Create OpenAiApi bean");
         return new OpenAiApi(gigaChatProp.getCreatePromt(), apiKey, headers, gigaChatProp.getUrlPromt(), "", restClientBuilder, clientBuilder, responseErrorHandler);
     }
 
     @Bean
+    @Primary
     public OpenAiEmbeddingModel openAiEmbeddingModel(OpenAiApi openAiApi) {
         log.info("OpenAiEmbeddingModel");
         return new OpenAiEmbeddingModel(openAiApi);
     }
 
     @Bean
+    @Primary
     public ApiKey apiKey(){
+        log.info("Create ApiKey");
         return new SimpleApiKey(getToken());
     }
 
     @Bean("promt-headers")
     public MultiValueMap<String, String> createGigaChatHeadersPromt() {
+        log.info("Create bean headers for promt");
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));

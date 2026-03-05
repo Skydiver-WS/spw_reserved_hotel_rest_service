@@ -48,9 +48,11 @@ public class RestConfiguration {
 
 
     @Bean("token-builder")
-    public RestClient.Builder restClientBuilderToken() throws Exception {
+    public RestClient.Builder restClientBuilderToken(@Qualifier("get-token-headers") HttpHeaders headers) throws Exception {
+        log.info("Select RestClient bean token-builder");
         return RestClient.builder()
                 .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
+                .defaultHeaders(h -> h.addAll(headers))
                 .requestInterceptor(((request, body, execution) -> {
                     System.out.println("========== OUTGOING REQUEST ==========");
                     System.out.println("URI: " + request.getURI());
@@ -63,10 +65,9 @@ public class RestConfiguration {
     }
 
     @Bean("promt-builder")
-    public RestClient.Builder restClientBuilderPromt(@Qualifier("promt-headers") HttpHeaders headers) throws Exception {
+    public RestClient.Builder restClientBuilderPromt() throws Exception {
         return RestClient.builder()
                 .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
-                .defaultHeaders(h -> h.addAll(headers))
                 .requestInterceptor(((request, body, execution) -> {
                     System.out.println("========== OUTGOING REQUEST ==========");
                     System.out.println("URI: " + request.getURI());

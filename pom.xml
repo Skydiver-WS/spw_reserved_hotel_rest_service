@@ -12,9 +12,10 @@
     <artifactId>hotel_rest_service</artifactId>
     <version>1.0.12</version>
     <name>rest-service</name>
-    <description>This is rest service</description>    <properties>
-        <java.version>25</java.version>
-        <lombok.version>1.18.38</lombok.version>
+    <description>This is rest service</description>
+    <properties>
+        <java.version>23</java.version>
+        <lombok.version>1.18.42</lombok.version>
         <jwt.version>0.12.7</jwt.version>
     </properties>
     <dependencies>
@@ -151,13 +152,13 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
-            			<plugin>
-            				<groupId>org.springframework.boot</groupId>
-            				<artifactId>spring-boot-maven-plugin</artifactId>
-            				<configuration>
-                                <mainClass>ru.project.reserved.system.hotel.rest.service.RestServiceApplication</mainClass>
-            				</configuration>
-            			</plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>ru.project.reserved.system.hotel.rest.service.RestServiceApplication</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

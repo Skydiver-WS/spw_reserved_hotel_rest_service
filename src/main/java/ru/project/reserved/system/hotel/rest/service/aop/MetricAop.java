@@ -1,16 +1,11 @@
 package ru.project.reserved.system.hotel.rest.service.aop;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
 import ru.project.reserved.system.hotel.rest.service.service.main.MetricService;
 
 import java.util.Objects;

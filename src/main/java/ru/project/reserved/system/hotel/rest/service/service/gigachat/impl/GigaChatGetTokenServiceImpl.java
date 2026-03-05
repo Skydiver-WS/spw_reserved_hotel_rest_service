@@ -11,7 +11,6 @@ import ru.project.reserved.system.hotel.rest.service.dto.RestDataDto;
 import ru.project.reserved.system.hotel.rest.service.dto.type.BeanType;
 import ru.project.reserved.system.hotel.rest.service.properties.GigaChatProp;
 import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatGetTokenService;
-import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
 import ru.project.reserved.system.hotel.rest.service.service.main.RestService;
 import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 

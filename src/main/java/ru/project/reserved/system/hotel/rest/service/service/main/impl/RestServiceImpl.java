@@ -31,7 +31,6 @@ public class RestServiceImpl implements RestService {
         try {
             return restClient.method(restDataDto.getMethod())
                     .uri(restDataDto.getUrl())
-                    .headers(h -> h.addAll(restDataDto.getHeaders()))
                     .body(Objects.nonNull(restDataDto.getBody()) ? restDataDto.getBody() : "")
                     .retrieve()
                     .toEntity(type);
