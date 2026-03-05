@@ -54,7 +54,7 @@ public class AIConfiguration {
     @Primary
     public OpenAiApi openAiApi(ApiKey apiKey, @Qualifier("promt-headers") MultiValueMap<String, String> headers,  @Qualifier("promt-builder") RestClient.Builder restClientBuilder, WebClient.Builder clientBuilder, ResponseErrorHandler responseErrorHandler) {
         log.info("Create OpenAiApi bean");
-        return new OpenAiApi(gigaChatProp.getCreatePromt(), apiKey, headers, gigaChatProp.getUrlPromt(), "", restClientBuilder, clientBuilder, responseErrorHandler);
+        return new OpenAiApi(gigaChatProp.getCreatePromt(), apiKey, headers, gigaChatProp.getUrlPromt(), "/stub", restClientBuilder, clientBuilder, responseErrorHandler);
     }
 
     @Bean

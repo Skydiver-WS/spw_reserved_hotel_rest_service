@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -48,8 +49,9 @@ public class RestConfiguration {
 
 
     @Bean("token-builder")
+    @Primary
     public RestClient.Builder restClientBuilderToken(@Qualifier("get-token-headers") HttpHeaders headers) throws Exception {
-        log.info("Select RestClient bean token-builder");
+        log.info("Create RestClient bean token-builder");
         return RestClient.builder()
                 .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
                 .defaultHeaders(h -> h.addAll(headers))
