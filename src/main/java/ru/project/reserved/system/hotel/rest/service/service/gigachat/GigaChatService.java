@@ -1,0 +1,14 @@
+package ru.project.reserved.system.hotel.rest.service.service.gigachat;
+
+
+import ru.project.reserved.system.hotel.rest.service.web.request.HotelRq;
+import ru.project.reserved.system.hotel.rest.service.web.request.PromtRq;
+import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
+
+public interface GigaChatService {
+
+
+    HotelRq getRsToPromtSpringAi(PromtRq promt);
+
+    int testMcpTool(int a, int b);
+}

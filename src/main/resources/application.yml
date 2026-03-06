@@ -21,6 +21,10 @@ spring:
   ai:
     openai:
       api-key: "stub-key"
+    mcp:
+      server:
+        annotation-scanner:
+          enabled: true
 
 db:
   service:
@@ -61,6 +65,7 @@ giga-chat:
     get-models-url: 'https://gigachat.devices.sberbank.ru/api/v1/models'
     create-promt: 'https://gigachat.devices.sberbank.ru/api'
     url-promt: '/v1/chat/completions'
+
 
 #    Генерация серта
 #

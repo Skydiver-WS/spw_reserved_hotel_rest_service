@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.project.reserved.system.hotel.rest.service.web.request.HotelRq;
+import ru.project.reserved.system.hotel.rest.service.web.request.RoomRq;
 
 import java.util.List;
 
@@ -31,6 +33,9 @@ public class GigaChatRs {
     private String object;
     private Usage usage;
     private String message;
+
+    private HotelRq hotelRq;
+    private RoomRq roomRq;
 
     @AllArgsConstructor
     @NoArgsConstructor
