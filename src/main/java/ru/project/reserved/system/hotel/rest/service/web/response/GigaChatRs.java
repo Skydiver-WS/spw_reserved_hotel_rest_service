@@ -16,75 +16,14 @@ import java.util.List;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GigaChatRs {
+public class  GigaChatRs {
 
     @JsonProperty(value = "access_token")
     private String token;
 
-    @JsonProperty(value = "expires_at")
-    private Long expires;
-
-    private String errorMessage;
-
-    private List<ModelGigaChat> data;
-
-    private List<Choice> choices;
-    private String model;
-    private String object;
-    private Usage usage;
     private String message;
+    private String content;
 
     private HotelRq hotelRq;
     private RoomRq roomRq;
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class ModelGigaChat {
-
-        private String id;
-        private String object;
-        @JsonProperty(value = "owen_by")
-        private String ownedBy;
-
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Choice {
-        private Integer index;
-        private String finish_reason;
-        private Message message;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Message {
-        private String role;
-        private String content;
-    }
-
-    @AllArgsConstructor
-    @NoArgsConstructor
-    @Data
-    @Builder
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Usage {
-        @JsonProperty("prompt_tokens")
-        private Integer promptTokens;
-        @JsonProperty("completion_tokens")
-        private Integer completionTokens;
-        @JsonProperty("system_tokens")
-        private Integer systemTokens;
-        @JsonProperty("total_tokens")
-        private Integer totalTokens;
-    }
 }

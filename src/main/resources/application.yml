@@ -59,7 +59,7 @@ token:
     levelCrypto: 10
 giga-chat:
   property:
-    model: "GigaChat"
+    model: "GigaChat-2"
     host: 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth'
     auth-token: MDE5YzUyOTMtZTI0OC03NmJmLWJiMzktNzk3MjE5OWQ0Nzk4OjMxNzc5YWNlLWUzM2YtNDNlOC04YTE3LWEwNGMxZDE1MzBlMA==
     get-models-url: 'https://gigachat.devices.sberbank.ru/api/v1/models'

@@ -8,7 +8,6 @@ import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 public interface GigaChatService {
 
 
-    HotelRq getRsToPromtSpringAi(PromtRq promt);
+    GigaChatRs getRsToPromtSpringAi(PromtRq promt);
 
-    int testMcpTool(int a, int b);
 }

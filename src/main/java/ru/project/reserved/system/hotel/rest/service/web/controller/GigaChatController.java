@@ -19,14 +19,10 @@ public class GigaChatController {
 
 
     @PostMapping("/promt/spring")
-    public ResponseEntity<HotelRq> promtSpringAi(@RequestBody PromtRq promt){
+    public ResponseEntity<GigaChatRs> promtSpringAi(@RequestBody PromtRq promt){
 
         return ResponseEntity.ok(gigaChatService.getRsToPromtSpringAi(promt));
     }
 
-//    @GetMapping("/promt/spring")
-//    public ResponseEntity<Integer> promtSpringAi(){
-//        return ResponseEntity.ok(gigaChatService.testMcpTool(1, 2));
-//    }
 
 }
