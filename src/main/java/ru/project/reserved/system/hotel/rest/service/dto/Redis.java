@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
+import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 
 import java.io.Serializable;
 
@@ -15,4 +16,5 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class Redis implements Serializable {
     private String token;
+    private GigaChatRs gigaChatRs;
 }

@@ -23,7 +23,9 @@ public class  GigaChatRs {
 
     private String message;
     private String content;
+    private boolean result = false;
 
     private HotelRq hotelRq;
+    private HotelRs hotelRs;
     private RoomRq roomRq;
 }
