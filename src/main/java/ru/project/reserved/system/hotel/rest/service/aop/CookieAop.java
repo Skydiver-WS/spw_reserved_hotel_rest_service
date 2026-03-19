@@ -1,15 +1,18 @@
 package ru.project.reserved.system.hotel.rest.service.aop;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.*;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.project.reserved.system.hotel.rest.service.dto.Redis;
@@ -31,46 +34,40 @@ public class CookieAop {
     private final RedisTemplate<UUID, Redis> redisTemplate;
 
     @Around("@annotation(cookie)")
-    public Object around(ProceedingJoinPoint joinPoint, Cookie cookie) throws Throwable {
+    public Object before(ProceedingJoinPoint joinPoint, Cookie cookie) throws Throwable {
+        Object rs = joinPoint.proceed();
+        ResponseEntity<GigaChatRs> response = (ResponseEntity<GigaChatRs>) rs;
+        GigaChatRs gigaChatRs = response.getBody();
+        if (Objects.nonNull(gigaChatRs) && !gigaChatRs.isResult()) {
+            HttpServletResponse servletResponse = getHttpServletResponse();
 
-        PromtRq rq = Arrays.stream(joinPoint.getArgs()).filter(o -> o instanceof PromtRq)
-                .map(o -> (PromtRq) o).findFirst().orElse(null);
+            if (servletResponse != null) {
+                // Создаем куку
+                jakarta.servlet.http.Cookie responseCookie = new jakarta.servlet.http.Cookie(
+                        "sessionId",
+                        UUID.randomUUID().toString()
+                );
 
-        if (Objects.isNull(rq)) {
-            Object result = joinPoint.proceed();
-            ResponseEntity<GigaChatRs> rs = (ResponseEntity<GigaChatRs>) result;
-            GigaChatRs gigaChatRs = rs.getBody();
-            if (!gigaChatRs.isResult()){
-                UUID sessionId = UUID.randomUUID();
-                redisTemplate.opsForValue().set(sessionId, Redis.builder()
-                        .gigaChatRs(gigaChatRs)
-                        .build());
+                // Настраиваем куку
+                responseCookie.setHttpOnly(true);  // для безопасности
+                responseCookie.setSecure(true);    // для HTTPS
+                responseCookie.setPath("/");
+                responseCookie.setMaxAge(3600);    // время жизни в секундах
+
+                // Добавляем куку в ответ
+                servletResponse.addCookie(responseCookie);
+                log.info("Cookie set: sessionId={}", responseCookie.getValue());
             }
-            return result;
+
         }
-
-
-        return rq;
-//        if(Strings.isBlank(cookieValue)){
-//            return joinPoint.proceed();
-//        }
-//
-//        Optional<Redis> redis = Optional.ofNullable(redisTemplate.opsForValue().getAndDelete(UUID.fromString(cookieValue)));
-//        return redis.get();
-
+        return rs;
     }
 
-    private String injectCookie(){
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        if(Objects.isNull(attributes)){
-            return "";
+    private HttpServletResponse getHttpServletResponse() {
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        if (requestAttributes instanceof ServletRequestAttributes) {
+            return ((ServletRequestAttributes) requestAttributes).getResponse();
         }
-        HttpServletRequest request = attributes.getRequest();
-        jakarta.servlet.http.Cookie[] cookies = request.getCookies();
-        return Arrays.stream(cookies)
-                .filter(c -> c.getName().equals("session"))
-                .findFirst()
-                .map(jakarta.servlet.http.Cookie::getValue)
-                .orElse("");
+        return null;
     }
 }

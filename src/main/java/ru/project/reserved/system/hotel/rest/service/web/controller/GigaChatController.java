@@ -24,7 +24,8 @@ public class GigaChatController {
     @Cookie
     public ResponseEntity<GigaChatRs> promtSpringAi(@RequestBody PromtRq promt){
 
-        return ResponseEntity.ok(gigaChatService.getRsToPromtSpringAi(promt, PROMT_GIGA_CHAT_SEARCH_HOTEL));
+//        return ResponseEntity.ok(gigaChatService.getRsToPromtSpringAi(promt, PROMT_GIGA_CHAT_SEARCH_HOTEL));
+        return ResponseEntity.ok(new GigaChatRs());
     }
 
 
