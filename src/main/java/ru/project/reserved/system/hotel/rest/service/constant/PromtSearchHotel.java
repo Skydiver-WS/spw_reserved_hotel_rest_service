@@ -15,7 +15,7 @@ public class PromtSearchHotel {
                     
                     - Если в запросе нет или не хватает данных ничего не заполняй
                     
-                    - Если данные есть или есть частично заполни JSON в формате и выставить флаг result в значение true:
+                    - Если все данные есть, то выстави флаг result в значение true:
                     
                     {
                        "result" : true,
@@ -34,6 +34,23 @@ public class PromtSearchHotel {
                     - Если данные есть частично заполни JSON в формате данными которые есть в запросе, отсутствующие данные не генерируй:
                     
                     {
+                        "result" : false,
+                        "hotelRq": {
+                         "hotelSearch": {
+                           "city": null,
+                           "distance": 13.3,
+                           "rating": null,
+                           "coastMax": 5000,
+                           "startReserved": "2026-03-01T10:00:00Z",
+                           "endReserved": null
+                         }
+                       }
+                    }
+                    
+                     - Если данные заполнены частично, то выстави флаг result со значением  false:
+                    
+                    {
+                        "result" : false,
                         "hotelRq": {
                          "hotelSearch": {
                            "city": null,
@@ -49,46 +66,18 @@ public class PromtSearchHotel {
                     """;
 
     public final static String PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA = """
-            Задача:
-            - произвести валидацию переданного JSON
-            - самостоятельно поля не заполнять, исключение поле content
+            Правила:
+            - произвести валидацию переданного JSON,  если поля
+              "city", "distance", "rating", "coastMax", "startReserved", "endReserved" не равны null, 
+              то флаг result присвоить значение true
             
-            Условия:
-            - если в переданном JSON флаг result в начении true, то вернуть переданный JSON:
+            - самостоятельно поля не заполнять
             
-            - если обязательое поле равно null, то заполнить поле content и попросить пользователя уточнить данные и вернуть JSON согласно примеру
-         
-            {
-                       "content" : "Пожалуйста укажите город, рейтинг отеля и дату окончания бронирования",
-                      "hotelRq": {
-                         "hotelSearch": {
-                           "city": null,
-                           "distance": 13.3,
-                           "rating": null,
-                           "coastMax": 5000,
-                           "startReserved": "2026-03-01T10:00:00Z",
-                           "endReserved": null
-                         }
-                       }
-                    }
-            -  если данные есть или есть частично заполни JSON в формате и выставить флаг result в значение true:
-            
-                    {
-                       "result" : true,
-                       "hotelRq": {
-                         "hotelSearch": {
-                           "city": "Курск",
-                           "distance": 13.3,
-                           "rating": 2.0,
-                           "coastMax": 5000,
-                           "startReserved": "2026-03-01T10:00:00Z",
-                           "endReserved": "2026-01-10T15:00:00Z"
-                         }
-                       }
-                    }
-            
-            
-            
-            
+            - еслю любое поле "city", "distance", "rating", "coastMax", "startReserved", "endReserved" равно null,
+              то заполнить поле "content" попросить пользователя уточнить данные
+              
+              {
+                 "content": This is text for user
+              }
             """;
 }

@@ -1,10 +1,15 @@
 package ru.project.reserved.system.hotel.rest.service.service.gigachat.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import ru.project.reserved.system.hotel.rest.service.aop.Cookie;
 import ru.project.reserved.system.hotel.rest.service.dto.Redis;
+import ru.project.reserved.system.hotel.rest.service.mapper.GigaChatMapper;
 import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatHandlerService;
 import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatService;
 import ru.project.reserved.system.hotel.rest.service.service.main.ProxyService;
@@ -27,10 +32,13 @@ import static ru.project.reserved.system.hotel.rest.service.constant.PromtSearch
 public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
     private final GigaChatService gigaChatService;
     private final ProxyService proxyService;
-    private final RedisTemplate<UUID, Redis> redisTemplate;
+    private final GigaChatMapper gigaChatMapper;
+    private final ObjectMapper objectMapper;
+
 
 
     @Override
+    @SneakyThrows
     public GigaChatRs handle(PromtRq promtRq) {
         GigaChatRs rs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_SEARCH_HOTEL);
         log.info("Giga chat response: {}", rs.toString());
@@ -40,10 +48,13 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
                     .hotelRs(hotelRs)
                     .build();
         }
-        UUID uuid = UUID.randomUUID();
-        redisTemplate.opsForValue().set(uuid, Redis.builder()
-                .gigaChatRs(rs)
-                .build(), Duration.ofMinutes(10));
-        return gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
+        gigaChatMapper.gigaPromtRqFromGigaChatRs(rs, promtRq);
+        promtRq.setContent(objectMapper.writeValueAsString(promtRq.getGigaChatRsInCache()));
+        rs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
+        if (Strings.isBlank(rs.getContent())){
+            return rs;
+        }
+
+        return
     }
 }

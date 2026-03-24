@@ -23,6 +23,7 @@ public class GigaChatServiceImpl implements GigaChatService {
 
     @Override
     public GigaChatRs getRsToPromtSpringAi(PromtRq promt, String promtDefault) {
+        log.info("Send promt in GigaChat: {}", promt.toString());
         return ChatClient.create(openAiChatModel)
                 .prompt()
                 .system(PROMT_GIGA_CHAT_START + promtDefault)

@@ -69,16 +69,16 @@ public class RestConfiguration {
     @Bean("promt-builder")
     public RestClient.Builder restClientBuilderPromt() throws Exception {
         return RestClient.builder()
-                .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()))
-                .requestInterceptor(((request, body, execution) -> {
-                    System.out.println("========== OUTGOING REQUEST ==========");
-                    System.out.println("URI: " + request.getURI());
-                    System.out.println("Method: " + request.getMethod());
-                    System.out.println("Headers: " + request.getHeaders());
-                    System.out.println("Body: " + objectMapper.writeValueAsString(new String(body, StandardCharsets.UTF_8)));
-                    System.out.println("======================================");
-                    return execution.execute(request, body);
-                }));
+                .requestFactory(new JdkClientHttpRequestFactory(getHttpClient()));
+//                .requestInterceptor(((request, body, execution) -> {
+//                    System.out.println("========== OUTGOING REQUEST ==========");
+//                    System.out.println("URI: " + request.getURI());
+//                    System.out.println("Method: " + request.getMethod());
+//                    System.out.println("Headers: " + request.getHeaders());
+//                    System.out.println("Body: " + objectMapper.writeValueAsString(new String(body, StandardCharsets.UTF_8)));
+//                    System.out.println("======================================");
+//                    return execution.execute(request, body);
+//                }));
     }
 
     private HttpClient getHttpClient() throws Exception{

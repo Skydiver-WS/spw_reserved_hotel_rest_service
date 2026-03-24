@@ -11,6 +11,7 @@ import ru.project.reserved.system.hotel.rest.service.dto.type.SortType;
 import ru.project.reserved.system.hotel.rest.service.dto.type.StatusType;
 
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RoomRq {
+public class RoomRq implements Serializable {
 
     private Long id;
 
@@ -49,7 +50,7 @@ public class RoomRq {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class RoomSearchRequest {
+    public static class RoomSearchRequest implements Serializable {
         @NotNull
         private Long hotelId;
         @NotNull
@@ -67,7 +68,7 @@ public class RoomRq {
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class RoomBooking {
+    public static class RoomBooking implements Serializable {
         private Long hotelId;
         private Date startReserved;
         private Date endReserved;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import ru.project.reserved.system.hotel.rest.service.web.request.HotelRq;
 import ru.project.reserved.system.hotel.rest.service.web.request.RoomRq;
 
+import java.io.Serializable;
 import java.util.List;
 
 @AllArgsConstructor
@@ -16,7 +17,7 @@ import java.util.List;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class  GigaChatRs {
+public class  GigaChatRs implements Serializable {
 
     @JsonProperty(value = "access_token")
     private String token;
