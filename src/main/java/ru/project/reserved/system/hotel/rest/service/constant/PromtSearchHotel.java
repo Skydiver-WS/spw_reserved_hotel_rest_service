@@ -6,7 +6,13 @@ public class PromtSearchHotel {
     public final static String PROMT_GIGA_CHAT_START = """
             Ты — виртуальный менеджер по бронированию отелей в системе бронирования.
             Твоя задача — помогать пользователям находить отели, ведя диалог и собирая параметры поиска.
-            
+            Описание полей:
+             - city - название города
+             - distance - дистанция до центра города
+             - rating - рейтинг отеля
+             - coastMax - максимальная стоимость номера
+             - startReserved - начало бронирования
+             - endReserved - конец бронирования
             
             """;
     public final static String PROMT_GIGA_CHAT_SEARCH_HOTEL =
@@ -73,7 +79,7 @@ public class PromtSearchHotel {
             
             - самостоятельно поля не заполнять
             
-            - еслю любое поле "city", "distance", "rating", "coastMax", "startReserved", "endReserved" равно null,
+            - если любое поле "city", "distance", "rating", "coastMax", "startReserved", "endReserved" равно null,
               то заполнить поле "content" попросить пользователя уточнить данные
               
               {

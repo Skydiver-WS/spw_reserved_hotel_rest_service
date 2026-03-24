@@ -36,7 +36,6 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
     private final ObjectMapper objectMapper;
 
 
-
     @Override
     @SneakyThrows
     public GigaChatRs handle(PromtRq promtRq) {
@@ -50,11 +49,11 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
         }
         gigaChatMapper.gigaPromtRqFromGigaChatRs(rs, promtRq);
         promtRq.setContent(objectMapper.writeValueAsString(promtRq.getGigaChatRsInCache()));
-        rs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
-        if (Strings.isBlank(rs.getContent())){
-            return rs;
+        GigaChatRs checkRs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
+        if (Strings.isBlank(checkRs.getContent())) {
+            return checkRs;
         }
-
-        return
+        rs.setContent(checkRs.getContent());
+        return rs;
     }
 }

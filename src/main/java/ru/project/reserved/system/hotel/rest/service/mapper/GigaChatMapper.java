@@ -18,4 +18,13 @@ public interface GigaChatMapper {
     @Mapping(target = "gigaChatRsInCache.hotelRs", source = "hotelRs")
     @Mapping(target = "gigaChatRsInCache.roomRq", source = "roomRq")
     void gigaPromtRqFromGigaChatRs(GigaChatRs gigaChatRs, @MappingTarget PromtRq promtRq);
+
+//    @Mapping(source = "gigaChatRsInCache.token", target = "token")
+//    @Mapping(source = "gigaChatRsInCache.message", target = "message")
+//    @Mapping(source = "gigaChatRsInCache.content", target = "content")
+//    @Mapping(source = "gigaChatRsInCache.result", target = "result")
+//    @Mapping(source = "gigaChatRsInCache.hotelRq", target = "hotelRq")
+//    @Mapping(source = "gigaChatRsInCache.hotelRs", target = "hotelRs")
+//    @Mapping(source = "gigaChatRsInCache.roomRq", target = "roomRq")
+//    void gigaGigaChatRsFromPromtRq(@MappingTarget GigaChatRs gigaChatRs, PromtRq promtRq);
 }
