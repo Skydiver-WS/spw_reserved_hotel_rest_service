@@ -53,7 +53,7 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
         if (Strings.isBlank(checkRs.getContent())) {
             return checkRs;
         }
-        rs.setContent(checkRs.getContent());
+       gigaChatMapper.mappingGigaChatRs(checkRs, rs);
         return rs;
     }
 }

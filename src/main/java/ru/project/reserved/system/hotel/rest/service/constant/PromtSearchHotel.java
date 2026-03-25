@@ -72,18 +72,38 @@ public class PromtSearchHotel {
                     """;
 
     public final static String PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA = """
-            Правила:
-            - произвести валидацию переданного JSON,  если поля
-              "city", "distance", "rating", "coastMax", "startReserved", "endReserved" не равны null, 
-              то флаг result присвоить значение true
-            
-            - самостоятельно поля не заполнять
-            
-            - если любое поле "city", "distance", "rating", "coastMax", "startReserved", "endReserved" равно null,
-              то заполнить поле "content" попросить пользователя уточнить данные
-              
-              {
-                 "content": This is text for user
-              }
-            """;
+        Задача: определить, все ли обязательные поля заполнены.
+        
+        Обязательные поля для проверки:
+        1. hotelRq.hotelSearch.city
+        2. hotelRq.hotelSearch.distance
+        3. hotelRq.hotelSearch.rating
+        4. hotelRq.hotelSearch.coastMax
+        5. hotelRq.hotelSearch.startReserved
+        6. hotelRq.hotelSearch.endReserved
+        
+        Алгоритм:
+        - Посмотри на значение каждого из этих полей во входящем JSON
+        - Если ВСЕ эти поля имеют значение НЕ null -> result = true, content = null
+        - Если поле city = null -> напиши в content: "Укажите город"
+        - Если city НЕ null, но любое другое поле = null -> напиши в content только про отсутствующие поля (НЕ упоминай city, так как он уже заполнен)
+        
+        ВАЖНО: 
+        - НЕ ПРОСИ заполнить city, если в JSON hotelRq.hotelSearch.city НЕ равен null
+        - Заполняй content только с перечислением ДЕЙСТВИТЕЛЬНО отсутствующих полей
+        
+        Пример 1 (заполнен только city):
+        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск"}}}
+        Выход: {"result": false, "content": "Укажите расстояние, рейтинг, максимальную стоимость, дату заезда и дату выезда"}
+        
+        Пример 2 (заполнены все поля):
+        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск","distance":5,"rating":4.5,"coastMax":10000,"startReserved":"2024-01-01","endReserved":"2024-01-10"}}}
+        Выход: {"result": true, "content": null}
+        
+        Пример 3 (city заполнен, остальные null):
+        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск","distance":null,"rating":null,"coastMax":null,"startReserved":null,"endReserved":null}}}
+        Выход: {"result": false, "content": "Укажите расстояние, рейтинг, максимальную стоимость, дату заезда и дату выезда"}
+        
+        Сейчас обработай следующий JSON:
+        """;
 }
