@@ -18,12 +18,11 @@ import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 import ru.project.reserved.system.hotel.rest.service.web.response.HotelRs;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static ru.project.reserved.system.hotel.rest.service.constant.PromtSearchHotel.PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA;
 import static ru.project.reserved.system.hotel.rest.service.constant.PromtSearchHotel.PROMT_GIGA_CHAT_SEARCH_HOTEL;
+import static ru.project.reserved.system.hotel.rest.service.utils.HotelRqValidateUtils.validateHotelRq;
 
 
 @RequiredArgsConstructor
@@ -48,12 +47,17 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
                     .build();
         }
         gigaChatMapper.gigaPromtRqFromGigaChatRs(rs, promtRq);
-        promtRq.setContent(objectMapper.writeValueAsString(promtRq.getGigaChatRsInCache()));
-        GigaChatRs checkRs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
-        if (Strings.isBlank(checkRs.getContent())) {
-            return checkRs;
+        String[] fieldsIsNull = validateHotelRq(promtRq.getGigaChatRsInCache().getHotelRq());
+        log.info("Data is null: {}", Arrays.toString(fieldsIsNull));
+        if (fieldsIsNull.length > 0){
+            log.info("Validate completed");
+            return rs;
         }
-       gigaChatMapper.mappingGigaChatRs(checkRs, rs);
+        GigaChatRs checkRs = gigaChatService.getRsToPromtSpringAi(PromtRq.builder()
+                .content(Arrays.toString(fieldsIsNull))
+                .build(), PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA);
+        rs.setContent(checkRs.getContent());
+        rs.setHotelRq(promtRq.getGigaChatRsInCache().getHotelRq());
         return rs;
     }
 }

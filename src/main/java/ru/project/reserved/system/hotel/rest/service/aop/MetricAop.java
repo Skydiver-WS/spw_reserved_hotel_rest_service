@@ -8,8 +8,6 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import ru.project.reserved.system.hotel.rest.service.service.main.MetricService;
 
-import java.util.Objects;
-
 @RequiredArgsConstructor
 @Slf4j
 @Aspect

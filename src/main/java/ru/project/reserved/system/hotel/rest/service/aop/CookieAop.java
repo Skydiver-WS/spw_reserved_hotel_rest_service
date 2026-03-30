@@ -3,10 +3,8 @@ package ru.project.reserved.system.hotel.rest.service.aop;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -16,12 +14,12 @@ import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.project.reserved.system.hotel.rest.service.dto.Redis;
+import ru.project.reserved.system.hotel.rest.service.properties.GigaChatProp;
 import ru.project.reserved.system.hotel.rest.service.web.request.PromtRq;
 import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -30,6 +28,7 @@ import java.util.stream.Stream;
 public class CookieAop {
 
     private final RedisTemplate<UUID, Redis> redisTemplate;
+    private final GigaChatProp prop;
 
     @Around("@annotation(cookie)")
     public Object before(ProceedingJoinPoint joinPoint, Cookie cookie) throws Throwable {
@@ -97,7 +96,7 @@ public class CookieAop {
                     responseCookie.setHttpOnly(true);
                     responseCookie.setSecure(true);
                     responseCookie.setPath("/");
-                    responseCookie.setMaxAge(3600);
+                    responseCookie.setMaxAge(Math.toIntExact(prop.getCookieLive().toMillis()));
 
                     // Добавляем куку в ответ
                     servletResponse.addCookie(responseCookie);
@@ -107,7 +106,7 @@ public class CookieAop {
                     redisTemplate.opsForValue().set(
                             UUID.fromString(sessionId),
                             Redis.builder().gigaChatRs(gigaChatRs).build(),
-                            Duration.ofMinutes(10)
+                            prop.getCookieLive()
                     );
                 }
             }

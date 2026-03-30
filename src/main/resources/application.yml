@@ -61,6 +61,7 @@ giga-chat:
     get-models-url: 'https://gigachat.devices.sberbank.ru/api/v1/models'
     create-promt: 'https://gigachat.devices.sberbank.ru/api'
     url-promt: '/v1/chat/completions'
+    cookie-live: 10m
 
 
 #    Генерация серта

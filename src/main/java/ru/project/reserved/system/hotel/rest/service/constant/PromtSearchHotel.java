@@ -7,12 +7,12 @@ public class PromtSearchHotel {
             Ты — виртуальный менеджер по бронированию отелей в системе бронирования.
             Твоя задача — помогать пользователям находить отели, ведя диалог и собирая параметры поиска.
             Описание полей:
-             - city - название города
-             - distance - дистанция до центра города
-             - rating - рейтинг отеля
-             - coastMax - максимальная стоимость номера
-             - startReserved - начало бронирования
-             - endReserved - конец бронирования
+             - hotelRq.hotelSearch.city - название города
+             - hotelRq.hotelSearch.distance - дистанция до центра
+             - hotelRq.hotelSearch.rating - рейтинг отеля
+             - hotelRq.hotelSearch.coastMax - максимальная стоимость номера
+             - hotelRq.hotelSearch.startReserved - начало бронирования
+             - hotelRq.hotelSearch.endReserved - конец бронирования
             
             """;
     public final static String PROMT_GIGA_CHAT_SEARCH_HOTEL =
@@ -20,6 +20,12 @@ public class PromtSearchHotel {
                     Условия:
                     
                     - Если в запросе нет или не хватает данных ничего не заполняй
+                             1. hotelRq.hotelSearch.city = null
+                             2. hotelRq.hotelSearch.distance = null
+                             3. hotelRq.hotelSearch.rating = null
+                             4. hotelRq.hotelSearch.coastMax = null
+                             5. hotelRq.hotelSearch.startReserved = null
+                             6. hotelRq.hotelSearch.endReserved = null
                     
                     - Если все данные есть, то выстави флаг result в значение true:
                     
@@ -72,38 +78,27 @@ public class PromtSearchHotel {
                     """;
 
     public final static String PROMT_GIGA_CHAT_CHECK_AND_ADDED_DATA = """
-        Задача: определить, все ли обязательные поля заполнены.
-        
-        Обязательные поля для проверки:
-        1. hotelRq.hotelSearch.city
-        2. hotelRq.hotelSearch.distance
-        3. hotelRq.hotelSearch.rating
-        4. hotelRq.hotelSearch.coastMax
-        5. hotelRq.hotelSearch.startReserved
-        6. hotelRq.hotelSearch.endReserved
-        
-        Алгоритм:
-        - Посмотри на значение каждого из этих полей во входящем JSON
-        - Если ВСЕ эти поля имеют значение НЕ null -> result = true, content = null
-        - Если поле city = null -> напиши в content: "Укажите город"
-        - Если city НЕ null, но любое другое поле = null -> напиши в content только про отсутствующие поля (НЕ упоминай city, так как он уже заполнен)
-        
-        ВАЖНО: 
-        - НЕ ПРОСИ заполнить city, если в JSON hotelRq.hotelSearch.city НЕ равен null
-        - Заполняй content только с перечислением ДЕЙСТВИТЕЛЬНО отсутствующих полей
-        
-        Пример 1 (заполнен только city):
-        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск"}}}
-        Выход: {"result": false, "content": "Укажите расстояние, рейтинг, максимальную стоимость, дату заезда и дату выезда"}
-        
-        Пример 2 (заполнены все поля):
-        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск","distance":5,"rating":4.5,"coastMax":10000,"startReserved":"2024-01-01","endReserved":"2024-01-10"}}}
-        Выход: {"result": true, "content": null}
-        
-        Пример 3 (city заполнен, остальные null):
-        Вход: {"hotelRq":{"hotelSearch":{"city":"Хабаровск","distance":null,"rating":null,"coastMax":null,"startReserved":null,"endReserved":null}}}
-        Выход: {"result": false, "content": "Укажите расстояние, рейтинг, максимальную стоимость, дату заезда и дату выезда"}
-        
-        Сейчас обработай следующий JSON:
+            Задача:
+              Сформировать сообщение пользователю на основе ТОЛЬКО переданного массива полей.
+              Вход:
+              Массив строк с отсутствующими полями.
+              Правила:
+              - Используй ТОЛЬКО поля из входного массива
+              - ЗАПРЕЩЕНО добавлять поля, которых нет в массиве
+              - НЕ додумывай и НЕ расширяй список
+              - Если поля нет во входе — НЕ упоминай его
+              Формат ответа:
+              {
+                "content": "текст для пользователя"
+              }
+              CRITICAL:
+              - Заполнять только поле "content" формат String
+              - Ответ должен основываться СТРОГО на входном массиве
+              - Нельзя добавлять новые поля
+              - Нельзя использовать знания вне входных данных
+              - Не использовать примеры как шаблон
+              - Ответ должен быть понятным для пользователя, с указанием данных необходимых для заполнения на основе передданного описания
+              - Валюту не указывать
+              - Поля не переданные в описании не генерировать
         """;
 }

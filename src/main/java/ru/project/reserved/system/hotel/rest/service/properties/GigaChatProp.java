@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -21,4 +23,5 @@ public class GigaChatProp {
     private String createPromt;
     private String urlPromt;
     private String authToken;
+    private Duration cookieLive;
 }
