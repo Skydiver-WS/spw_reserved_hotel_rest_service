@@ -3,6 +3,7 @@ package ru.project.reserved.system.hotel.rest.service.service.main.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -27,31 +28,31 @@ public class ProxyServiceImpl implements ProxyService {
 
     @Override
     public <T> Object proxyOperation(Object rq, Class<T> clazz) {
-        RestDataDto restDataDto = createData(rq, null);
+        RestDataDto restDataDto = createData(rq, null,null);
         return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
     }
 
     @Override
-    public <T> Object proxyOperation(Object rq, HttpMethod method, Class<T> clazz) {
-        RestDataDto restDataDto = createData(rq, method);
+    public <T> Object proxyOperation(Object rq, String url, HttpMethod method, Class<T> clazz) {
+        RestDataDto restDataDto = createData(rq, url, method);
         return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
     }
 
-    private RestDataDto createData(Object request, HttpMethod method) {
+    private RestDataDto createData(Object request, String url, HttpMethod method) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         String param = request instanceof Pageable p ?
                 String.format("?page=%d&size=%d", p.getPageNumber(), p.getPageSize()) : "";
         return RestDataDto.builder()
                 .headers(headers)
-                .url(host() + uri() + param)
+                .url(host() + uri(url) + param)
                 .method(Objects.isNull(method) ? httpMethod() : method)
                 .body(request)
                 .build();
     }
 
-    private String uri(){
-        String uri = getHttpAttributes().getRequestURI();
+    private String uri(String url){
+        String uri = Strings.isBlank(url) ? getHttpAttributes().getRequestURI() : url;
         if(uri.contains("booking/update")){
             uri = uri.replaceAll("/update", "");
         } else if (uri.contains("booking/remove")){

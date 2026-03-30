@@ -53,7 +53,7 @@ public class CookieAop {
                 jakarta.servlet.http.Cookie[] ck = httpServletRequest.getCookies();
 
                 if (ck != null) {
-                   sessionId = Arrays.stream(ck)
+                    sessionId = Arrays.stream(ck)
                             .filter(c -> c.getName().equals("sessionId"))
                             .map(jakarta.servlet.http.Cookie::getValue)
                             .findFirst().orElse("");
@@ -65,7 +65,6 @@ public class CookieAop {
                                 log.info("Set previous response Giga chat");
                                 GigaChatRs gigaChatRs = redis.getGigaChatRs();
                                 rq.setGigaChatRsInCache(gigaChatRs);
-                                // НЕ ВЫЗЫВАЕМ proceed() снова!
                             }
                         } catch (IllegalArgumentException e) {
                             log.error("Invalid sessionId format: {}", sessionId);
@@ -84,7 +83,7 @@ public class CookieAop {
             if (Objects.nonNull(gigaChatRs) && !gigaChatRs.isResult()) {
                 HttpServletResponse servletResponse = getHttpServletResponse();
                 if (servletResponse != null) {
-                     sessionId = Strings.isBlank(sessionId) ? UUID.randomUUID().toString() : sessionId;
+                    sessionId = Strings.isBlank(sessionId) ? UUID.randomUUID().toString() : sessionId;
 
                     // Создаем куку
                     jakarta.servlet.http.Cookie responseCookie = new jakarta.servlet.http.Cookie(
@@ -96,18 +95,23 @@ public class CookieAop {
                     responseCookie.setHttpOnly(true);
                     responseCookie.setSecure(true);
                     responseCookie.setPath("/");
-                    responseCookie.setMaxAge(Math.toIntExact(prop.getCookieLive().toMillis()));
+                    responseCookie.setMaxAge(!gigaChatRs.isResult() ? Math.toIntExact(prop.getCookieLive().toMillis()) :
+                            0);
 
                     // Добавляем куку в ответ
                     servletResponse.addCookie(responseCookie);
                     log.info("Cookie set: sessionId={}", responseCookie.getValue());
 
                     // Сохраняем в Redis
-                    redisTemplate.opsForValue().set(
-                            UUID.fromString(sessionId),
-                            Redis.builder().gigaChatRs(gigaChatRs).build(),
-                            prop.getCookieLive()
-                    );
+                    if (gigaChatRs.isResult()) {
+                        redisTemplate.opsForValue().getAndDelete(UUID.fromString(sessionId));
+                    } else {
+                        redisTemplate.opsForValue().set(
+                                UUID.fromString(sessionId),
+                                Redis.builder().gigaChatRs(gigaChatRs).build(),
+                                prop.getCookieLive()
+                        );
+                    }
                 }
             }
         }

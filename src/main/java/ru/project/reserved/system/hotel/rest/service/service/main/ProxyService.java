@@ -5,5 +5,5 @@ import org.springframework.http.HttpMethod;
 public interface ProxyService {
 
     <T> Object proxyOperation(Object rq, Class<T> clazz);
-    <T> Object proxyOperation(Object rq, HttpMethod method, Class<T> clazz);
+    <T> Object proxyOperation(Object rq, String url, HttpMethod method, Class<T> clazz);
 }
