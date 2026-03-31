@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
@@ -42,17 +43,16 @@ public class GigaChatHandlerServiceImpl implements GigaChatHandlerService {
 
     @Override
     @SneakyThrows
-    public GigaChatRs handle(PromtRq promtRq) {
+    public GigaChatRs handle(PromtRq promtRq, Pageable pageable) {
         GigaChatRs rs = gigaChatService.getRsToPromtSpringAi(promtRq, PROMT_GIGA_CHAT_SEARCH_HOTEL);
         log.info("Giga chat response: {}", rs.toString());
         if (rs.isResult()) {
             if (Objects.nonNull(promtRq.getGigaChatRsInCache())) {
-                hotelMapper.mappingHotelRq(rs.getHotelRq(), promtRq.getGigaChatRsInCache().getHotelRq());
+                hotelMapper.mappingHotelRq(promtRq.getGigaChatRsInCache().getHotelRq(), rs.getHotelRq());
             }
-            HotelRs hotelRs = (HotelRs) proxyService.proxyOperation(promtRq.getGigaChatRsInCache()
-                            .getHotelRq()
-                            .getHotelSearch(),
-                    prop.getHostData(),
+            HotelRs hotelRs = (HotelRs) proxyService.proxyOperation(rs.getHotelRq(),
+                    "/api/v1/hotel/search",
+                    pageable,
                     HttpMethod.POST,
                     HotelRs.class);
             return GigaChatRs.builder()

@@ -26,7 +26,7 @@ public class HotelController {
 
     @PostMapping("/search")
     @Metric(type = MetricType.SEARCH_HOTEL)
-    public ResponseEntity<HotelRs> findHotels(@RequestBody HotelRq hotelRq){
+    public ResponseEntity<HotelRs> findHotels(@RequestBody HotelRq hotelRq, Pageable pageable){
         return ResponseEntity.ok((HotelRs) proxyService.proxyOperation(hotelRq, HotelRs.class));
     }
 

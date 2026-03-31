@@ -2,6 +2,7 @@ package ru.project.reserved.system.hotel.rest.service.web.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +22,8 @@ public class RoomController {
 
     @GetMapping
     @Metric(type = MetricType.ALL_ROOMS)
-    public ResponseEntity<RoomRs> findAllRooms() {
-        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(null, RoomRs.class));
+    public ResponseEntity<RoomRs> findAllRooms(Pageable pageable) {
+        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(pageable, RoomRs.class));
     }
 
     @PostMapping("/booking")
@@ -48,8 +49,8 @@ public class RoomController {
 
     @PostMapping("/search")
     @Metric(type = MetricType.FIND_ROOMS)
-    public ResponseEntity<RoomRs> findRooms(@RequestBody @Valid RoomRq roomRq) {
-        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(roomRq, RoomRs.class));
+    public ResponseEntity<RoomRs> findRooms(@RequestBody @Valid RoomRq roomRq, Pageable pageable) {
+        return ResponseEntity.ok((RoomRs) proxyService.proxyOperation(roomRq, pageable, RoomRs.class));
     }
 
     @PostMapping

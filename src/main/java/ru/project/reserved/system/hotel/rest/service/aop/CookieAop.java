@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.logging.log4j.util.Strings;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ import ru.project.reserved.system.hotel.rest.service.properties.GigaChatProp;
 import ru.project.reserved.system.hotel.rest.service.web.request.PromtRq;
 import ru.project.reserved.system.hotel.rest.service.web.response.GigaChatRs;
 
-import java.time.Duration;
+
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -35,10 +36,16 @@ public class CookieAop {
         log.info("Start AOP");
 
         // 1. ВЫПОЛНЯЕМ МЕТОД ТОЛЬКО ОДИН РАЗ В САМОМ НАЧАЛЕ
+        Object [] args = joinPoint.getArgs();
+        Pageable pageable = Arrays.stream(args)
+                .filter(a -> a instanceof Pageable)
+                .map(a -> (Pageable) a)
+                .findFirst()
+                .orElse(null);
 
 
         // 2. Ищем PromtRq В АРГУМЕНТАХ (не в результате!)
-        PromtRq rq = Arrays.stream(joinPoint.getArgs())
+        PromtRq rq = Arrays.stream(args)
                 .filter(o -> o instanceof PromtRq)
                 .map(o -> (PromtRq) o)
                 .findFirst()
@@ -73,7 +80,7 @@ public class CookieAop {
                 }
             }
         }
-        Object result = joinPoint.proceed(List.of(rq).toArray());
+        Object result = joinPoint.proceed(List.of(rq, pageable).toArray());
 
         // 4. Обрабатываем ответ (result уже есть!)
         if (result instanceof ResponseEntity) {

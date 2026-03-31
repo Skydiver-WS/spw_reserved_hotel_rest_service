@@ -33,8 +33,16 @@ public class ProxyServiceImpl implements ProxyService {
     }
 
     @Override
-    public <T> Object proxyOperation(Object rq, String url, HttpMethod method, Class<T> clazz) {
+    public <T> Object proxyOperation(Object rq, Pageable pageable, Class<T> clazz) {
+        RestDataDto restDataDto = createData(rq, null,null);
+        restDataDto.setPageable(pageable);
+        return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
+    }
+
+    @Override
+    public <T> Object proxyOperation(Object rq, String url,  Pageable pageable, HttpMethod method, Class<T> clazz) {
         RestDataDto restDataDto = createData(rq, url, method);
+        restDataDto.setPageable(pageable);
         return restService.sendData(restDataDto, BeanType.MAIN_REST, clazz).getBody();
     }
 

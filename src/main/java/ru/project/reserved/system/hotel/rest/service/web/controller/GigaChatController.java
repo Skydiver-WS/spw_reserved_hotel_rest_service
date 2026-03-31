@@ -2,6 +2,7 @@ package ru.project.reserved.system.hotel.rest.service.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.project.reserved.system.hotel.rest.service.aop.Cookie;
@@ -23,9 +24,9 @@ public class GigaChatController {
 
     @PostMapping("/promt/spring")
     @Cookie
-    public ResponseEntity<GigaChatRs> promtSpringAi(@RequestBody PromtRq promt){
+    public ResponseEntity<GigaChatRs> promtSpringAi(@RequestBody PromtRq promt, Pageable pageable){
         log.info("Send promt request to GigaChat");
-        return ResponseEntity.ok(gigaChatHandlerService.handle(promt));
+        return ResponseEntity.ok(gigaChatHandlerService.handle(promt, pageable));
     }
 
 
