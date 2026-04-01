@@ -28,5 +28,5 @@ public class  GigaChatRs implements Serializable {
 
     private HotelRq hotelRq;
     private HotelRs hotelRs;
-    private RoomRq roomRq;
+
 }
