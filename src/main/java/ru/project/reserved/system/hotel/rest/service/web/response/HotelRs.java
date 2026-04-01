@@ -6,13 +6,14 @@ import lombok.Getter;
 import lombok.Setter;
 import ru.project.reserved.system.hotel.rest.service.dto.Photo;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
 @Setter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class HotelRs {
+public class HotelRs implements Serializable {
     private Long id;
     private String name;
     private String description;

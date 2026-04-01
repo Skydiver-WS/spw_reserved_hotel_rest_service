@@ -5,6 +5,7 @@ import lombok.*;
 import ru.project.reserved.system.hotel.rest.service.dto.Photo;
 import ru.project.reserved.system.hotel.rest.service.dto.type.SortType;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class HotelRq {
+public class HotelRq implements Serializable {
 
     private Long id;
     private String name;
@@ -30,7 +31,7 @@ public class HotelRq {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class HotelSearchRequest {
+    public static class HotelSearchRequest implements Serializable {
         private String city;
         private String hotelName;
         private Date startReserved;
@@ -48,7 +49,7 @@ public class HotelRq {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UserRq{
+    public static class UserRq implements Serializable {
         @NotNull
         private String userId;
     }
