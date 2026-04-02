@@ -3,7 +3,6 @@ package ru.project.reserved.system.hotel.rest.service.configuration;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.ai.model.ApiKey;
 import org.springframework.ai.model.SimpleApiKey;
 import org.springframework.ai.model.tool.ToolCallingManager;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.retry.support.RetryTemplate;
@@ -25,6 +25,8 @@ import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatGe
 
 import java.util.List;
 
+import static ru.project.reserved.system.hotel.rest.service.service.gigachat.impl.GigaChatGetTokenServiceImpl.token;
+
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
@@ -32,7 +34,6 @@ public class AIConfiguration {
 
     private final GigaChatProp gigaChatProp;
     private final GigaChatGetTokenService gigaChatGetTokenService;
-    private static String token;
 
     @Bean
     @Primary
@@ -57,6 +58,7 @@ public class AIConfiguration {
                                WebClient.Builder clientBuilder,
                                ResponseErrorHandler responseErrorHandler) {
         log.info("Create OpenAiApi bean");
+        log.warn("ApiKey {}", apiKey.hashCode());
         return new OpenAiApi(gigaChatProp.getCreatePromt(), apiKey, headers, gigaChatProp.getUrlPromt(), "/stub", restClientBuilder, clientBuilder, responseErrorHandler);
     }
 
@@ -69,12 +71,14 @@ public class AIConfiguration {
 
     @Bean
     @Primary
-    public ApiKey apiKey(){
+    @Scope("prototype")
+    public ApiKey apiKey() {
         log.info("Create ApiKey");
         return new SimpleApiKey(getToken());
     }
 
     @Bean("promt-headers")
+    @Scope("prototype")
     public MultiValueMap<String, String> createGigaChatHeadersPromt() {
         log.info("Create bean headers for promt");
         HttpHeaders headers = new HttpHeaders();
@@ -84,10 +88,7 @@ public class AIConfiguration {
         return headers;
     }
 
-    private String getToken(){
-        if(Strings.isBlank(token)){
-            token = gigaChatGetTokenService.gotGigaChatToken().getToken();
-        }
-        return token;
+    private String getToken() {
+        return gigaChatGetTokenService.gotGigaChatToken().getToken();
     }
 }
