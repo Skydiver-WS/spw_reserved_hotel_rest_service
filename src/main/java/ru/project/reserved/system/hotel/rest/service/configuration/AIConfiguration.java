@@ -21,6 +21,8 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.project.reserved.system.hotel.rest.service.properties.GigaChatProp;
+import ru.project.reserved.system.hotel.rest.service.scheduler.UpdateTokenScheduler;
+import ru.project.reserved.system.hotel.rest.service.service.gigachat.CustomApiKeyService;
 import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatGetTokenService;
 
 import java.util.List;
@@ -71,10 +73,9 @@ public class AIConfiguration {
 
     @Bean
     @Primary
-    @Scope("prototype")
-    public ApiKey apiKey() {
+    public ApiKey apiKey(UpdateTokenScheduler updateTokenScheduler) {
         log.info("Create ApiKey");
-        return new SimpleApiKey(getToken());
+        return new CustomApiKeyService(updateTokenScheduler);
     }
 
     @Bean("promt-headers")
