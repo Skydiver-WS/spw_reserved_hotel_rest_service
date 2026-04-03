@@ -5,7 +5,7 @@ server:
     key-store: classpath:cert/keystore.p12
     key-store-password: 123456
     key-alias: rest-app-hotel
-    enabled: true
+    enabled: false
 spring:
   application:
     name: reserved_hotel_rest_service
