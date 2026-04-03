@@ -3,7 +3,6 @@ package ru.project.reserved.system.hotel.rest.service.configuration;
 import io.micrometer.observation.ObservationRegistry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.ai.model.ApiKey;
 import org.springframework.ai.model.SimpleApiKey;
 import org.springframework.ai.model.tool.ToolCallingManager;
@@ -13,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.retry.support.RetryTemplate;
@@ -21,9 +21,13 @@ import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.reactive.function.client.WebClient;
 import ru.project.reserved.system.hotel.rest.service.properties.GigaChatProp;
+import ru.project.reserved.system.hotel.rest.service.scheduler.UpdateTokenScheduler;
+import ru.project.reserved.system.hotel.rest.service.service.gigachat.CustomApiKeyService;
 import ru.project.reserved.system.hotel.rest.service.service.gigachat.GigaChatGetTokenService;
 
 import java.util.List;
+
+import static ru.project.reserved.system.hotel.rest.service.service.gigachat.impl.GigaChatGetTokenServiceImpl.token;
 
 @Configuration
 @Slf4j
@@ -32,7 +36,6 @@ public class AIConfiguration {
 
     private final GigaChatProp gigaChatProp;
     private final GigaChatGetTokenService gigaChatGetTokenService;
-    private static String token;
 
     @Bean
     @Primary
@@ -52,8 +55,12 @@ public class AIConfiguration {
 
     @Bean
     @Primary
-    public OpenAiApi openAiApi(ApiKey apiKey, @Qualifier("promt-headers") MultiValueMap<String, String> headers,  @Qualifier("promt-builder") RestClient.Builder restClientBuilder, WebClient.Builder clientBuilder, ResponseErrorHandler responseErrorHandler) {
+    public OpenAiApi openAiApi(ApiKey apiKey, @Qualifier("promt-headers") MultiValueMap<String, String> headers,
+                               @Qualifier("promt-builder") RestClient.Builder restClientBuilder,
+                               WebClient.Builder clientBuilder,
+                               ResponseErrorHandler responseErrorHandler) {
         log.info("Create OpenAiApi bean");
+        log.warn("ApiKey {}", apiKey.hashCode());
         return new OpenAiApi(gigaChatProp.getCreatePromt(), apiKey, headers, gigaChatProp.getUrlPromt(), "/stub", restClientBuilder, clientBuilder, responseErrorHandler);
     }
 
@@ -66,12 +73,13 @@ public class AIConfiguration {
 
     @Bean
     @Primary
-    public ApiKey apiKey(){
+    public ApiKey apiKey(UpdateTokenScheduler updateTokenScheduler) {
         log.info("Create ApiKey");
-        return new SimpleApiKey(getToken());
+        return new CustomApiKeyService(updateTokenScheduler);
     }
 
     @Bean("promt-headers")
+    @Scope("prototype")
     public MultiValueMap<String, String> createGigaChatHeadersPromt() {
         log.info("Create bean headers for promt");
         HttpHeaders headers = new HttpHeaders();
@@ -81,57 +89,7 @@ public class AIConfiguration {
         return headers;
     }
 
-//    @Bean
-//    public OpenAiImageModel openAiImageModel(OpenAiImageApi openAiImageApi) {
-//        log.info("OpenAiImageModel");
-//        return new OpenAiImageModel(openAiImageApi);
-//    }
-//
-//    @Bean
-//    public OpenAiImageApi openAiImageApi( @Qualifier("promt-builder") RestClient.Builder restClientBuilder) {
-//        log.info("OpenAiImageApi");
-//        return new OpenAiImageApi(gigaChatProp.getCreatePromt(), getToken(), restClientBuilder);
-//    }
-//
-//    @Bean
-//    public OpenAiAudioTranscriptionModel openAiAudioTranscriptionModel(OpenAiAudioApi audioApi) {
-//        log.info("OpenAiAudioTranscriptionModel");
-//        return new OpenAiAudioTranscriptionModel(audioApi);
-//    }
-//
-//    @Bean
-//    public OpenAiAudioApi openAiAudioApi(@Qualifier("promt-builder") RestClient.Builder restClientBuilder, ResponseErrorHandler errorHandler) {
-//        log.info("OpenAiAudioApi");
-//        return new OpenAiAudioApi(gigaChatProp.getCreatePromt(), getToken(), restClientBuilder, errorHandler);
-//    }
-//
-//    @Bean
-//    public OpenAiModerationModel openAiModerationModel(OpenAiModerationApi openAiModerationApi){
-//        log.info("OpenAiModerationModel");
-//        return new OpenAiModerationModel(openAiModerationApi);
-//    }
-//
-//    @Bean
-//    public OpenAiModerationApi openAiModerationApi(@Qualifier("promt-builder") RestClient.Builder restClientBuilder, ResponseErrorHandler errorHandler) {
-//        log.info("OpenAiModerationApi");
-//        return new OpenAiModerationApi(gigaChatProp.getCreatePromt(), getToken(), restClientBuilder, errorHandler);
-//    }
-//
-//    @Bean
-//    public OpenAiAudioSpeechModel openAiAudioSpeechModel(OpenAiAudioApi audioApi) {
-//        log.info("OpenAiAudioSpeechModel");
-//        return new OpenAiAudioSpeechModel(audioApi);
-//    }
-
-//    @Bean
-//    public ChatLanguageModel chatLanguageModel(OpenAiApi openAiApi){
-//        return new dev.langchain4j.model.openai.OpenAiChatModel();
-//    }
-
-    private String getToken(){
-        if(Strings.isBlank(token)){
-            token = gigaChatGetTokenService.gotGigaChatToken().getToken();
-        }
-        return token;
+    private String getToken() {
+        return gigaChatGetTokenService.gotGigaChatToken().getToken();
     }
 }

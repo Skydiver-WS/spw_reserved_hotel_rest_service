@@ -21,6 +21,10 @@ spring:
   ai:
     openai:
       api-key: "stub-key"
+  task:
+    scheduling:
+      pool:
+        size: 2
 
 db:
   service:
@@ -62,6 +66,8 @@ giga-chat:
     create-promt: 'https://gigachat.devices.sberbank.ru/api'
     url-promt: '/v1/chat/completions'
     cookie-live: 10m
+scheduler:
+  update-token: "0 */30 * * * *"
 
 
 #    Генерация серта
