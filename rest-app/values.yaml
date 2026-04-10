@@ -1,0 +1,41 @@
+# Default values for rest-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  #Образ в докере или в другом репозитории
+  repository: skydiverkhv/hotel_rest_service
+
+#  Значение	Что делает pullPolicy
+#  Always	всегда тянет образ
+#  IfNotPresent	только если нет локально
+#  Never	не тянет вообще
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: 2.0.1.1
+
+#  service — как обращаться к приложению
+#  🧠 Что это значит
+#  OpenShift создаст Service
+#  Он будет доступен внутри кластера
+#
+#  📌 type
+#  Тип	Значение
+#  ClusterIP	только внутри
+#  NodePort	через порт ноды
+#  LoadBalancer	внешний IP (редко в OpenShift)
+#
+#  👉 В OpenShift обычно:
+#
+#  Service = внутри
+#  Route = наружу
+service:
+  type: ClusterIP
+  port: 8443
+
+secret:
+  name: rest-app-secret
+  key: GIGA_CHAT_AUTH_KEY
+  value: stub_key

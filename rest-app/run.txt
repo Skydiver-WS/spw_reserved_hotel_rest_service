@@ -1,0 +1,30 @@
+1) Create project
+oc new-project auth-data-db
+Now using project "auth-data-db" on server "https://api.crc.testing:6443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app rails-postgresql-example
+
+to build a new example application in Ruby. Or use kubectl to deploy a simple Kubernetes application:
+
+    kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.43 -- /agnhost serve-hostname
+
+2) Select project
+oc project auth-data-db
+
+
+1) Install
+helm install rest-app .
+
+2) Update
+
+helm upgrade rest-app .
+
+3) Secret create
+
+oc create secret generic rest-app-secret --from-literal=API_TOKEN(key)=super-secret-token(value) -n rest-app-project
+
+4) проверка наличия истио
+
+oc get pods -n istio-system

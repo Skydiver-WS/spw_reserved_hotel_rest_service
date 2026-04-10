@@ -1,0 +1,16 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Chart.Name }}-route
+
+#  🔗 Куда идёт трафик
+#  spec:
+#   to:
+#     kind: Service
+#      name: rest-app-service
+spec:
+  to:
+    kind: Service
+    name: {{ .Chart.Name }}-service
+  port:
+    targetPort: {{ .Values.service.port }}
