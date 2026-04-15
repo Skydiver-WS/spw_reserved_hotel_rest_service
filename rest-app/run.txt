@@ -19,7 +19,7 @@ helm install rest-app .
 
 2) Update
 
-helm upgrade rest-app .
+
 
 3) Secret create
 
