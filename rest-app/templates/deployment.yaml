@@ -7,8 +7,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 0 # сколько новых Pod можно создать сверху
-      maxUnavailable: 1 # сколько можно удалить старых
+      maxSurge: 1 # сколько новых Pod можно создать сверху
+      maxUnavailable: 0 # сколько можно удалить старых
 
   selector:
     matchLabels:
@@ -25,8 +25,73 @@ spec:
           ports:
             - containerPort: {{ .Values.service.port }}
           env:
-            - name: {{ .Values.secret.key }}
+            - name: {{ .Values.secret.giga_chat.key }}
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secret.name }}
-                  key: {{ .Values.secret.key }}
+                  key: {{ .Values.secret.giga_chat.key }}
+            - name: {{ .Values.secret.certificate.key_pass }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.certificate.key_pass }}
+            - name: {{ .Values.secret.certificate.key_enabled }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.certificate.key_enabled }}
+            - name: {{ .Values.secret.spring_security.key_value_key}}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.spring_security.key_value_key}}
+            - name: {{ .Values.secret.spring_security.key_expiration }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.spring_security.key_expiration }}
+            - name: {{ .Values.secret.spring_security.key_level_crypto }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secret.name }}
+                  key: {{ .Values.secret.spring_security.key_level_crypto }}
+            - name: APP_HOTEL_DB
+              value: {{ .Values.hotel_service.db_app_hotel_url | quote}}
+            - name: APP_AUTH_DB
+              value: {{ .Values.hotel_service.db_app_auth_url | quote}}
+            - name: REDIS_URL
+              value: {{ .Values.redis.url | quote}}
+            - name: REDIS_PORT
+              value: {{ .Values.redis.port | quote}}
+            - name: REDIS_TIME_LIVE_MESSAGES
+              value: {{ .Values.redis.time_live_messages | quote}}
+            - name: GIGA_CHAT_MODEL
+              value: {{ .Values.giga_chat.model | quote }}
+            - name: GIGA_CHAT_HOST
+              value: {{ .Values.giga_chat.host | quote}}
+            - name: GIGA_CHAT_CREATE_PROMT
+              value: {{ .Values.giga_chat.create_promt | quote }}
+            - name: GIGA_CHAT_URL_PROMT
+              value: {{ .Values.giga_chat.url_promt | quote }}
+            - name: GIGA_CHAT_COOKIE_LIVE
+              value: {{ .Values.giga_chat.cookie_live | quote}}
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage=75.0 -XX:InitialRAMPercentage=50.0"
+          livenessProbe:
+            tcpSocket:
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          readinessProbe:
+            tcpSocket:
+              port: {{ .Values.service.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}

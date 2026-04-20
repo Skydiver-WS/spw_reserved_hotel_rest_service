@@ -19,7 +19,7 @@ helm install rest-app .
 
 2) Update
 
-
+helm upgrade auth-db-app .
 
 3) Secret create
 
