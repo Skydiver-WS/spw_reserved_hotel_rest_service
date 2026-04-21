@@ -12,7 +12,7 @@ image:
 #  Always	всегда тянет образ
 #  IfNotPresent	только если нет локально
 #  Never	не тянет вообще
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: 2.0.2
 
@@ -36,11 +36,11 @@ service:
   port: 8443
 
 hotel_service:
-  db_app_hotel_url: erg
-  db_app_auth_url: sdf
+  db_app_hotel_url: http://hotel-db-app-service.hotel-apps.svc.cluster.local:8081/booking-app
+  db_app_auth_url: http://auth-db-app.hotel-apps.svc.cluster.local:8084/auth-db-app
 
 redis:
-  url: sdf
+  url: http://redis-app.database.svc.cluster.local
   port: 6379
   time_live_messages: 10m
 
