@@ -20,5 +20,5 @@ WORKDIR /app
 COPY --from=builder /app/target/hotel_rest_service-*.jar app.jar
 
 EXPOSE 8443
-ENV SPRING_PROFILES_ACTIVE=vitrual-thread,prod
+ENV SPRING_PROFILES_ACTIVE=virtual-thread,prod
 ENTRYPOINT ["java", "-jar", "app.jar"]
