@@ -8,7 +8,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Собираем приложение с Maven профилями
-RUN mvn clean package -Pvitrual-thread,prod -DskipTests
+RUN mvn clean package -Pvirtual-thread,prod -DskipTests
 
 # Финальный образ
 FROM amazoncorretto:23
