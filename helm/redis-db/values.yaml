@@ -25,5 +25,8 @@ resources:
    requests:
      cpu: 100m
      memory: 256Mi
+persistence:
+  enabled: true
+  size: 1Gi
 
 

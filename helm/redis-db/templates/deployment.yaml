@@ -17,6 +17,8 @@ spec:
       labels:
         app: {{ .Chart.Name }}
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -40,4 +42,12 @@ spec:
               port: {{ .Values.service.port }}
             initialDelaySeconds: 5
             periodSeconds: 10
+          volumeMounts:
+            - name: {{ .Chart.Name }}-storage
+              mountPath: /data
 
+      volumes:
+        # ✅ теперь используется PVC вместо emptyDir
+        - name: {{ .Chart.Name }}-storage
+          persistentVolumeClaim:
+            claimName: {{ .Chart.Name }}-pvc
